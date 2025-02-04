@@ -1,4 +1,4 @@
-package com.dmf.loja.novoautor;
+package com.dmf.loja.autor;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

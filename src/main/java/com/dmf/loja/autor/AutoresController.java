@@ -1,4 +1,4 @@
-package com.dmf.loja.novoautor;
+package com.dmf.loja.autor;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;

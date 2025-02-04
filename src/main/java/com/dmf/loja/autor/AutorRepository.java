@@ -1,4 +1,4 @@
-package com.dmf.loja.novoautor;
+package com.dmf.loja.autor;
 
 import org.springframework.data.repository.CrudRepository;
 

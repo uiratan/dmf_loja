@@ -1,4 +1,4 @@
-package com.dmf.loja.novoautor;
+package com.dmf.loja.autor;
 
 import com.dmf.loja.validation.campounicoannotation.CampoUnico;
 import jakarta.validation.constraints.Email;
