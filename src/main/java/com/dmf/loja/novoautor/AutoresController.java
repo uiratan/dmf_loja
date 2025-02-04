@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 //3
@@ -13,17 +12,8 @@ public class AutoresController {
 
     private final EntityManager entityManager;
 
-    //1
-    private final ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator;
-
-    public AutoresController(EntityManager entityManager, ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator) {
+    public AutoresController(final EntityManager entityManager) {
         this.entityManager = entityManager;
-        this.proibeEmailDuplicadoAutorValidator = proibeEmailDuplicadoAutorValidator;
-    }
-
-    @InitBinder
-    public void init(WebDataBinder binder) {
-        binder.addValidators(proibeEmailDuplicadoAutorValidator);
     }
 
     @PostMapping(value = "/autores")
