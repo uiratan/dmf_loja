@@ -1,5 +1,6 @@
 package com.dmf.loja.categoria;
 
+import com.dmf.loja.validation.CampoUnicoValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -11,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 public class CategoriasController {
 
     private final EntityManager entityManager;
-    private final ProibeNomeDuplicadoCategoriaValidator proibeNomeDuplicadoCategoriaValidator;
+    private final CampoUnicoValidator<NovaCategoriaRequest> nomeUnicoCategoriaValidator;
 
     public CategoriasController(
             final EntityManager entityManager,
-            final ProibeNomeDuplicadoCategoriaValidator proibeNomeDuplicadoCategoriaValidator) {
+            final CampoUnicoValidator<NovaCategoriaRequest> nomeUnicoCategoriaValidator) {
         this.entityManager = entityManager;
-        this.proibeNomeDuplicadoCategoriaValidator = proibeNomeDuplicadoCategoriaValidator;
+        this.nomeUnicoCategoriaValidator = nomeUnicoCategoriaValidator;
     }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(proibeNomeDuplicadoCategoriaValidator);
+        binder.addValidators(nomeUnicoCategoriaValidator);
     }
 
     @PostMapping("/categorias")

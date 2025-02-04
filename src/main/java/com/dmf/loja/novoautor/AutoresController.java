@@ -1,5 +1,6 @@
 package com.dmf.loja.novoautor;
 
+import com.dmf.loja.validation.CampoUnicoValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -12,18 +13,21 @@ import org.springframework.web.bind.annotation.*;
 public class AutoresController {
 
     private final EntityManager entityManager;
+    private final CampoUnicoValidator<NovoAutorRequest> emailUnicoAutorValidator;
 
     //1
-    private final ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator;
 
-    public AutoresController(EntityManager entityManager, ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator) {
+    public AutoresController(
+            final EntityManager entityManager,
+            final CampoUnicoValidator<NovoAutorRequest> emailUnicoAutorValidator1
+    ) {
         this.entityManager = entityManager;
-        this.proibeEmailDuplicadoAutorValidator = proibeEmailDuplicadoAutorValidator;
+        this.emailUnicoAutorValidator = emailUnicoAutorValidator1;
     }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(proibeEmailDuplicadoAutorValidator);
+        binder.addValidators(emailUnicoAutorValidator);
     }
 
     @PostMapping(value = "/autores")
