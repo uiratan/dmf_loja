@@ -1,4 +1,4 @@
-package com.dmf.loja.validation;
+package com.dmf.loja.validation.advice;
 
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;

@@ -1,35 +1,27 @@
 package com.dmf.loja.categoria;
 
-import com.dmf.loja.validation.CampoUnicoValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+//2
 @RestController
 public class CategoriasController {
 
     private final EntityManager entityManager;
-    private final CampoUnicoValidator<NovaCategoriaRequest> nomeUnicoCategoriaValidator;
 
-    public CategoriasController(
-            final EntityManager entityManager,
-            final CampoUnicoValidator<NovaCategoriaRequest> nomeUnicoCategoriaValidator) {
+    public CategoriasController(final EntityManager entityManager) {
         this.entityManager = entityManager;
-        this.nomeUnicoCategoriaValidator = nomeUnicoCategoriaValidator;
-    }
-
-    @InitBinder
-    public void init(WebDataBinder binder) {
-        binder.addValidators(nomeUnicoCategoriaValidator);
     }
 
     @PostMapping("/categorias")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
+    //1
     public String criarCategoria(@RequestBody @Valid NovaCategoriaRequest novaCategoriaRequest) {
+        //1
         Categoria novaCategoria = novaCategoriaRequest.toModel();
         entityManager.persist(novaCategoria);
         return novaCategoria.toString();

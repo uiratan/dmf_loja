@@ -1,4 +1,4 @@
-package com.dmf.loja.validation;
+package com.dmf.loja.validation.advice;
 
 public record FieldErrorsResponse(
         String field,

@@ -1,4 +1,4 @@
-package com.dmf.loja.validation;
+package com.dmf.loja.validation.advice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
