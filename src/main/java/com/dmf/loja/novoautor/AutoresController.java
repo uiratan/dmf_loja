@@ -13,8 +13,17 @@ public class AutoresController {
 
     private final EntityManager entityManager;
 
-    public AutoresController(EntityManager entityManager) {
+    //1
+    private final ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator;
+
+    public AutoresController(EntityManager entityManager, ProibeEmailDuplicadoAutorValidator proibeEmailDuplicadoAutorValidator) {
         this.entityManager = entityManager;
+        this.proibeEmailDuplicadoAutorValidator = proibeEmailDuplicadoAutorValidator;
+    }
+
+    @InitBinder
+    public void init(WebDataBinder binder) {
+        binder.addValidators(proibeEmailDuplicadoAutorValidator);
     }
 
     @PostMapping(value = "/autores")
