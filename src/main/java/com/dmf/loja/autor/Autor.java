@@ -45,8 +45,24 @@ public class Autor {
     @Deprecated
     public Autor() {}
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Instant getInstanteCriacao() {
+        return instanteCriacao;
     }
 
     @Override

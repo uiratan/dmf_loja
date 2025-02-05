@@ -19,6 +19,11 @@ public class ValidationErrorsResponse {
         this.errors = List.of();
     }
 
+    public ValidationErrorsResponse(String message, String erros) {
+        this.message = message;
+        this.errors = List.of(new FieldErrorsResponse("", erros));
+    }
+
     //1
     public ValidationErrorsResponse(List<ObjectError> globalErrors, List<FieldError> fieldErrors, MessageService messageService) {
         this.message = "Erro de validação";

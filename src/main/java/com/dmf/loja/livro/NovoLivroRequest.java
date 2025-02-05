@@ -56,6 +56,4 @@ public record NovoLivroRequest(
                 autor
         );
     }
-
-    ;
 }

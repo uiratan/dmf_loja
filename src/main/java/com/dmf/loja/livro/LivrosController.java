@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("livros")
+@RequestMapping
 public class LivrosController {
 
     private final EntityManager entityManager;
@@ -18,7 +18,7 @@ public class LivrosController {
         this.entityManager = entityManager;
     }
 
-    @PostMapping
+    @PostMapping("livros")
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public String criarLivro(@RequestBody @Valid NovoLivroRequest novoLivroRequest) {
@@ -27,7 +27,7 @@ public class LivrosController {
         return novoLivro.toString();
     }
 
-    @GetMapping
+    @GetMapping("livros")
     public List<LivrosResponse> listarLivros() {
         return entityManager.createQuery("SELECT l.id, l.titulo FROM Livro l", LivrosResponse.class)
                 .getResultList();

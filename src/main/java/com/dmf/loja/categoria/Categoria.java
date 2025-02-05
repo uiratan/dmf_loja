@@ -1,12 +1,11 @@
 package com.dmf.loja.categoria;
 
-import com.dmf.loja.livro.Livro;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.util.Assert;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 public class Categoria {
@@ -30,6 +29,14 @@ public class Categoria {
 
     @Deprecated
     public Categoria() { }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 
     @Override
     public String toString() {

@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Livro {
@@ -18,57 +19,57 @@ public class Livro {
 
     @Column(nullable = false)
     @NotBlank
-    private final String titulo;
+    private String titulo;
 
     @Column(nullable = false)
     @NotBlank
     @Size(max = 500)
-    private final String resumo;
+    private String resumo;
 
     @Size(max = 4000)
-    private final String sumario;
+    private String sumario;
 
     @Column(nullable = false)
     @NotNull
     @Min(20)
-    private final BigDecimal preco;
+    private BigDecimal preco;
 
     @Column(nullable = false)
     @NotNull
     @Min(100)
-    private final Integer numeroPaginas;
+    private Integer numeroPaginas;
 
     @Column(nullable = false)
     @NotBlank
-    private final String isbn;
+    private String isbn;
 
     @Column(nullable = false)
     @NotNull
     @Future
-    private final LocalDate dataPublicacao;
+    private LocalDate dataPublicacao;
 
     // Lado proprietário: o Livro contém a chave estrangeira do Autor.
     @NotNull
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
-    private final Categoria categoria;
+    private Categoria categoria;
 
     // Lado proprietário: o Livro contém a chave estrangeira da Categoria.
     @NotNull
     @ManyToOne
     @JoinColumn(name = "autor_id", nullable = false)
-    private final Autor autor;
+    private Autor autor;
 
     public Livro(
-            final String titulo,
-            final String resumo,
-            final String sumario,
-            final BigDecimal preco,
-            final Integer numeroPaginas,
-            final String isbn,
-            final LocalDate dataPublicacao,
-            final Categoria categoria,
-            final Autor autor
+            String titulo,
+            String resumo,
+            String sumario,
+            BigDecimal preco,
+            Integer numeroPaginas,
+            String isbn,
+            LocalDate dataPublicacao,
+            Categoria categoria,
+            Autor autor
     ) {
         // Verificações de invariantes utilizando Assert do Spring
         Assert.hasText(titulo, "O título não pode ser vazio ou nulo");
@@ -92,6 +93,45 @@ public class Livro {
         this.autor = autor;
     }
 
+    public Livro() {
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getResumo() {
+        return resumo;
+    }
+
+    public String getSumario() {
+        return sumario;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
+
+    public Integer getNumeroPaginas() {
+        return numeroPaginas;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public LocalDate getDataPublicacao() {
+        return dataPublicacao;
+    }
+
+    public String getDataPublicacaoComFormato(String formato) {
+        return dataPublicacao.format(DateTimeFormatter.ofPattern(formato));
+    }
+
+
+    public Autor getAutor() {
+        return autor;
+    }
 
     @Override
     public String toString() {
