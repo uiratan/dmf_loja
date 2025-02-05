@@ -4,12 +4,12 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@RequestMapping("livros")
 public class LivrosController {
 
     private final EntityManager entityManager;
@@ -18,7 +18,7 @@ public class LivrosController {
         this.entityManager = entityManager;
     }
 
-    @PostMapping(value = "/livros")
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public String criarLivro(@RequestBody @Valid NovoLivroRequest novoLivroRequest) {
@@ -26,4 +26,11 @@ public class LivrosController {
         entityManager.persist(novoLivro);
         return novoLivro.toString();
     }
+
+    @GetMapping
+    public List<LivrosResponse> listarLivros() {
+        return entityManager.createQuery("SELECT l.id, l.titulo FROM Livro l", LivrosResponse.class)
+                .getResultList();
+    }
+
 }
