@@ -1,9 +1,8 @@
 package com.dmf.loja.livro;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.dmf.loja.autor.Autor;
+import com.dmf.loja.categoria.Categoria;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
@@ -15,34 +14,50 @@ public class Livro {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    @NotBlank String titulo;
+    @NotBlank
+    private final String titulo;
 
     @Column(nullable = false)
-    @NotBlank @Size(max = 500) String resumo;
+    @NotBlank
+    @Size(max = 500)
+    private final String resumo;
 
     @Size(max = 4000)
-    String sumario;
+    private final String sumario;
 
     @Column(nullable = false)
-    @NotNull @Min(20) BigDecimal preco;
+    @NotNull
+    @Min(20)
+    private final BigDecimal preco;
 
     @Column(nullable = false)
-    @NotNull @Min(100) Integer numeroPaginas;
+    @NotNull
+    @Min(100)
+    private final Integer numeroPaginas;
 
     @Column(nullable = false)
-    @NotBlank String isbn;
+    @NotBlank
+    private final String isbn;
 
     @Column(nullable = false)
-    @NotNull @Future LocalDate dataPublicacao;
+    @NotNull
+    @Future
+    private final LocalDate dataPublicacao;
 
-    @Column(nullable = false)
-    @NotNull Integer categoriaId;
+    // Lado proprietário: o Livro contém a chave estrangeira do Autor.
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private final Categoria categoria;
 
-    @Column(nullable = false)
-    @NotNull Integer autorId;
+    // Lado proprietário: o Livro contém a chave estrangeira da Categoria.
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "autor_id", nullable = false)
+    private final Autor autor;
 
     public Livro(
             final String titulo,
@@ -52,9 +67,9 @@ public class Livro {
             final Integer numeroPaginas,
             final String isbn,
             final LocalDate dataPublicacao,
-            final Integer categoriaId,
-            final Integer autorId) {
-
+            final Categoria categoria,
+            final Autor autor
+    ) {
         // Verificações de invariantes utilizando Assert do Spring
         Assert.hasText(titulo, "O título não pode ser vazio ou nulo");
         Assert.hasText(resumo, "O resumo não pode ser vazio ou nulo");
@@ -63,8 +78,8 @@ public class Livro {
         Assert.hasText(isbn, "O ISBN não pode ser vazio ou nulo");
         Assert.notNull(dataPublicacao, "A data de publicação não pode ser nula");
         Assert.isTrue(dataPublicacao.isAfter(LocalDate.now()), "A data de publicação deve ser no futuro");
-        Assert.notNull(categoriaId, "A categoria ID não pode ser nula");
-        Assert.notNull(autorId, "O autor ID não pode ser nulo");
+        Assert.notNull(categoria, "A categoria não pode ser nula");
+        Assert.notNull(autor, "O autor  não pode ser nulo");
 
         this.titulo = titulo;
         this.resumo = resumo;
@@ -73,9 +88,10 @@ public class Livro {
         this.numeroPaginas = numeroPaginas;
         this.isbn = isbn;
         this.dataPublicacao = dataPublicacao;
-        this.categoriaId = categoriaId;
-        this.autorId = autorId;
+        this.categoria = categoria;
+        this.autor = autor;
     }
+
 
     @Override
     public String toString() {
@@ -88,8 +104,8 @@ public class Livro {
                 ", numeroPaginas=" + numeroPaginas +
                 ", isbn='" + isbn + '\'' +
                 ", dataPublicacao=" + dataPublicacao +
-                ", categoriaId=" + categoriaId +
-                ", autorId=" + autorId +
+                ", categoria=" + categoria +
+                ", autor=" + autor +
                 '}';
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LivrosController {
 
     private final EntityManager entityManager;
+
     public LivrosController(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -21,7 +22,7 @@ public class LivrosController {
     @ResponseStatus(HttpStatus.OK)
     @Transactional
     public String criarLivro(@RequestBody @Valid NovoLivroRequest novoLivroRequest) {
-        Livro novoLivro = novoLivroRequest.toModel();
+        Livro novoLivro = novoLivroRequest.toModel(entityManager);
         entityManager.persist(novoLivro);
         return novoLivro.toString();
     }
