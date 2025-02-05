@@ -45,6 +45,10 @@ public class Autor {
     @Deprecated
     public Autor() {}
 
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public String toString() {
         return "Autor{" +
