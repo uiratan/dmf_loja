@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.util.Assert;
 
 @Entity
 public class Pais {
@@ -16,6 +17,8 @@ public class Pais {
     private String nome;
 
     public Pais(String nome) {
+        Assert.hasText(nome, "O nome é obrigatório");
+
         this.nome = nome;
     }
 
