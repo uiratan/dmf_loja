@@ -3,6 +3,7 @@ package com.dmf.loja.pagamento;
 
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
+import com.dmf.loja.validation.documento.CPFCNPJ;
 import com.dmf.loja.validation.existeid.ExisteId;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.Email;
@@ -14,7 +15,7 @@ public record NovoPagamentoRequest(
         @NotBlank @Email String email,
         @NotBlank String nome,
         @NotBlank String sobrenome,
-        @NotBlank String documento, //precisa ser um cpf ou cnpj
+        @NotBlank @CPFCNPJ String documento, //precisa ser um cpf ou cnpj
         @NotBlank String endereco,
         @NotBlank String complemento,
         @NotBlank String cidade,
