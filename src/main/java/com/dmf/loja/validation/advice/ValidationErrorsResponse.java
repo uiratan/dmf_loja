@@ -1,37 +1,32 @@
 package com.dmf.loja.validation.advice;
 
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.BindingResult;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ValidationErrorsResponse {
     private final String message;
-
-    //1
     private final List<FieldErrorsResponse> errors;
 
-    public ValidationErrorsResponse(String message) {
+    private ValidationErrorsResponse(String message, List<FieldErrorsResponse> errors) {
         this.message = message;
-        this.errors = List.of();
+        this.errors = List.copyOf(errors);
     }
 
-    public ValidationErrorsResponse(String message, String erros) {
-        this.message = message;
-        this.errors = List.of(new FieldErrorsResponse("", erros));
+    public static ValidationErrorsResponse fromMessage(String message) {
+        return new ValidationErrorsResponse(message, List.of());
     }
 
-    //1
-    public ValidationErrorsResponse(List<ObjectError> globalErrors, List<FieldError> fieldErrors, MessageService messageService) {
-        this.message = "Erro de validação";
-        List<FieldErrorsResponse> combinedErrors = new ArrayList<>();
+    public static ValidationErrorsResponse fromBindingResult(BindingResult bindingResult, MessageService messageService) {
+        List<FieldErrorsResponse> combinedErrors = Stream.concat(
+                bindingResult.getGlobalErrors().stream()
+                        .map(error -> new FieldErrorsResponse(null, error.getDefaultMessage())),
+                bindingResult.getFieldErrors().stream()
+                        .map(error -> new FieldErrorsResponse(error.getField(), messageService.getMessage(error)))
+        ).toList();
 
-        combinedErrors.addAll(mapGlobalErrors(globalErrors));
-        combinedErrors.addAll(mapFieldErrors(fieldErrors, messageService));
-        this.errors = Collections.unmodifiableList(combinedErrors);
+        return new ValidationErrorsResponse("Erro de validação", combinedErrors);
     }
 
     public String getMessage() {
@@ -40,17 +35,5 @@ public class ValidationErrorsResponse {
 
     public List<FieldErrorsResponse> getErrors() {
         return errors;
-    }
-
-    private List<FieldErrorsResponse> mapFieldErrors(List<FieldError> fieldErrors, MessageService messageService) {
-        return fieldErrors.stream()
-                .map(error -> new FieldErrorsResponse(error.getField(), messageService.getMessage(error)))
-                .collect(Collectors.toList());
-    }
-
-    private List<FieldErrorsResponse> mapGlobalErrors(List<ObjectError> globalErrors) {
-        return globalErrors.stream()
-                .map(error -> new FieldErrorsResponse(null, error.getDefaultMessage()))
-                .collect(Collectors.toList());
     }
 }
