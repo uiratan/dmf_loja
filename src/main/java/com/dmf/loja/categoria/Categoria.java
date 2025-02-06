@@ -18,6 +18,10 @@ public class Categoria {
     @Column(nullable = false, unique = true)
     private String nome;
 
+    // Lado inverso: mapeia os livros com o atributo "autor" da entidade Livro.
+//    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<Livro> livros = new HashSet<>();
+
     public Categoria(String nome) {
         Assert.hasText(nome, "O nome é obrigatório");
         this.nome = nome;
@@ -25,6 +29,14 @@ public class Categoria {
 
     @Deprecated
     public Categoria() { }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 
     @Override
     public String toString() {

@@ -11,23 +11,17 @@ import java.time.Instant;
 @Entity
 public class Autor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     @Column(nullable = false)
-    private String nome;
+    @NotBlank private String nome;
 
-    @NotBlank
-    @Email
     @Column(nullable = false, unique = true)
-    private String email;
+    @NotBlank @Email private String email;
 
-    @NotBlank
-    @Size(max = 400)
     @Column(nullable = false, length = 400)
-    private String descricao;
+    @NotBlank @Size(max = 400) private String descricao;
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATETIME(6)")
     private Instant instanteCriacao;
@@ -50,6 +44,26 @@ public class Autor {
 
     @Deprecated
     public Autor() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public Instant getInstanteCriacao() {
+        return instanteCriacao;
+    }
 
     @Override
     public String toString() {
