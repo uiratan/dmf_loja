@@ -9,9 +9,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class PagamentoController {
 
+    private final EntityManager entityManager;
+
+    public PagamentoController(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     @PostMapping("/pagamentos")
-    public NovoPagamentoRequest realizarPagamento(@RequestBody @Valid NovoPagamentoRequest novoPagamentoRequest) {
-        return novoPagamentoRequest;
+    public String realizarPagamento(@RequestBody @Valid NovoPagamentoRequest novoPagamentoRequest) {
+        NovoPagamentoRequest comprador = novoPagamentoRequest.registraComprador(entityManager);
+        System.out.println(comprador);
+        return "novoPagamentoRequest";
     }
 }
 
