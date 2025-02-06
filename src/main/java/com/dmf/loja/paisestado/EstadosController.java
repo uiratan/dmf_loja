@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PaisEstadoController {
+public class EstadosController {
 
     private final EntityManager entityManager;
 
-    public PaisEstadoController(EntityManager entityManager) {
+    public EstadosController(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @PostMapping("/paises")
+    @PostMapping("/estados")
     @Transactional
-    public String cadastraPais(@RequestBody @Valid NovoPaisRequest novoPaisRequest) {
-        Pais novoPais = novoPaisRequest.toModel();
-        entityManager.persist(novoPais);
-        return novoPais.toString();
+    public String cadastraEstado(@RequestBody @Valid NovoEstadoRequest novoEstadoRequest) {
+        Estado novoEstado = novoEstadoRequest.toModel(entityManager);
+        entityManager.persist(novoEstado);
+        return novoEstado.toString();
     }
 
 }
