@@ -1,4 +1,4 @@
-package com.dmf.loja.livrodetalhe;
+package com.dmf.loja.livrodetalhes;
 
 import com.dmf.loja.livro.Livro;
 

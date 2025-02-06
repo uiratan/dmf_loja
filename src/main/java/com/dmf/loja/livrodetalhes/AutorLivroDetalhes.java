@@ -1,4 +1,4 @@
-package com.dmf.loja.livrodetalhe;
+package com.dmf.loja.livrodetalhes;
 
 public record AutorLivroDetalhes(
         String nome,
