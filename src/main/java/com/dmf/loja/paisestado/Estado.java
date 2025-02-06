@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 
+//1
 @Entity
 public class Estado {
 
@@ -14,6 +15,7 @@ public class Estado {
 
     @NotBlank private String nome;
 
+    //1
     @ManyToOne
     @JoinColumn(name = "pais_id", nullable = false)
     @NotNull private Pais pais;

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+//2
 @Entity
 public class Livro {
 
@@ -48,13 +49,13 @@ public class Livro {
     @Future
     private LocalDate dataPublicacao;
 
-    // Lado proprietário: o Livro contém a chave estrangeira do Autor.
+    //1
     @NotNull
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    // Lado proprietário: o Livro contém a chave estrangeira da Categoria.
+    //1
     @NotNull
     @ManyToOne
     @JoinColumn(name = "autor_id", nullable = false)
@@ -129,6 +130,7 @@ public class Livro {
     }
 
 
+    @Deprecated
     public Autor getAutor() {
         return autor;
     }

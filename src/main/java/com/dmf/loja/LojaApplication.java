@@ -21,9 +21,7 @@ public class LojaApplication {
 
     @Component
     public static class DataLoader implements CommandLineRunner {
-
         private final EntityManager entityManager;
-
         public DataLoader(EntityManager entityManager) {
             this.entityManager = entityManager;
         }
@@ -37,8 +35,6 @@ public class LojaApplication {
 
         private void carregarCategorias() {
             List<String> categoriasIniciais = List.of("Java", "DDD", "Arquitetura de Software");
-
-
             for (String nome : categoriasIniciais) {
                 entityManager.persist(new Categoria(nome));
             }
@@ -50,7 +46,6 @@ public class LojaApplication {
                     new Autor("Martin Fowler", "fowler@thoughworks.com", "O melhor autor sobre padrões de projetos corporativos."),
                     new Autor("Uncle Bob", "bob@clean.com", "Nosso tiozão.")
             );
-
             for (Autor autor : autoresIniciais) {
                 entityManager.persist(autor);
             }

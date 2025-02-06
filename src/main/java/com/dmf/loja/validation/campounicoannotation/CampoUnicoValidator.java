@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+//1
 public class CampoUnicoValidator implements ConstraintValidator<CampoUnico, String> {
 
     private String fieldName;

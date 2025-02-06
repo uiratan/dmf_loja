@@ -4,6 +4,7 @@ import com.dmf.loja.livro.Livro;
 
 import java.math.BigDecimal;
 
+//2
 public record LivroDetalhesResponse(
         String titulo,
         String resumo,
@@ -14,6 +15,7 @@ public record LivroDetalhesResponse(
         String dataPublicacao,
         AutorLivroDetalhes autor
 ) {
+    //1
     public static LivroDetalhesResponse fromModel(Livro livro) {
         return new LivroDetalhesResponse(
                 livro.getTitulo(),
@@ -23,6 +25,7 @@ public record LivroDetalhesResponse(
                 livro.getNumeroPaginas(),
                 livro.getIsbn(),
                 livro.getDataPublicacaoComFormato("dd/MM/yyyy"),
+                //1
                 new AutorLivroDetalhes(livro.getAutor().getNome(), livro.getAutor().getDescricao())
         );
     }

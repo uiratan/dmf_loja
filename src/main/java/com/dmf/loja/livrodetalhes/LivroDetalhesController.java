@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+//3
 @RestController
 @RequestMapping
 public class LivroDetalhesController {
@@ -22,12 +23,14 @@ public class LivroDetalhesController {
 
     @GetMapping("produtos/{id}")
     public ResponseEntity<?> consultarLivro(@PathVariable("id") Long id) {
+        //1
         Livro livroDesejado = entityManager.find(Livro.class, id);
+        //1
         if (livroDesejado == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-//            return ResponseEntity.notFound().build();
         }
 
+        //1
         LivroDetalhesResponse livroDetalheResponse = LivroDetalhesResponse.fromModel(livroDesejado);
         return ResponseEntity.ok(livroDetalheResponse);
     }

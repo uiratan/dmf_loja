@@ -5,8 +5,10 @@ import org.springframework.validation.BindingResult;
 import java.util.List;
 import java.util.stream.Stream;
 
+//3
 public class ValidationErrorsResponse {
     private final String message;
+    //1
     private final List<FieldErrorsResponse> errors;
 
     private ValidationErrorsResponse(String message, List<FieldErrorsResponse> errors) {
@@ -21,8 +23,10 @@ public class ValidationErrorsResponse {
     public static ValidationErrorsResponse fromBindingResult(BindingResult bindingResult, MessageService messageService) {
         List<FieldErrorsResponse> combinedErrors = Stream.concat(
                 bindingResult.getGlobalErrors().stream()
+                        //1
                         .map(error -> new FieldErrorsResponse(null, error.getDefaultMessage())),
                 bindingResult.getFieldErrors().stream()
+                        //1
                         .map(error -> new FieldErrorsResponse(error.getField(), messageService.getMessage(error)))
         ).toList();
 

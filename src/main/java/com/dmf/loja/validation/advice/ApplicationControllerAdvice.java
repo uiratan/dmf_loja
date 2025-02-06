@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+//2
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationControllerAdvice.class);
 
+    //1
     private final MessageService messageService;
 
     public ApplicationControllerAdvice(MessageService messageService) {
@@ -22,6 +24,7 @@ public class ApplicationControllerAdvice {
 
     @ExceptionHandler(ResponseStatusException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    //1
     public ValidationErrorsResponse handleResponseStatusException(ResponseStatusException exception) {
         logger.warn("[{}] - ResponseStatusException: {}", exception.getStatusCode(), exception.toString());
         return ValidationErrorsResponse.fromMessage(exception.getStatusCode().toString());

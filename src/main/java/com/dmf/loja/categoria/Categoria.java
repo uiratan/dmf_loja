@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.util.Assert;
 
+//0
 @Entity
 public class Categoria {
 

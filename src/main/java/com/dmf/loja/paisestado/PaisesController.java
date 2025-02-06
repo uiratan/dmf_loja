@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+//2
 @RestController
 public class PaisesController {
 
@@ -18,7 +19,9 @@ public class PaisesController {
 
     @PostMapping("/paises")
     @Transactional
+    //1
     public String cadastraPais(@RequestBody @Valid NovoPaisRequest novoPaisRequest) {
+        //1
         Pais novoPais = novoPaisRequest.toModel();
         entityManager.persist(novoPais);
         return novoPais.toString();

@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 
 import java.time.Instant;
 
+//0
 @Entity
 public class Autor {
 

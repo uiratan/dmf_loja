@@ -12,7 +12,9 @@ import org.springframework.util.Assert;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+//4
 public record NovoLivroRequest(
+        //1
         @CampoUnico(fieldName = "titulo", domainClass = Livro.class)
         @NotBlank String titulo,
 
@@ -30,6 +32,7 @@ public record NovoLivroRequest(
         @JsonFormat(pattern = "dd/MM/yyy", shape = JsonFormat.Shape.STRING)
         @NotNull @Future LocalDate dataPublicacao,
 
+        //1
         @ExisteId(fieldName = "id", domainClass = Categoria.class)
         @NotNull Long idCategoria,
 
@@ -38,7 +41,9 @@ public record NovoLivroRequest(
 ) {
     public Livro toModel(EntityManager entityManager) {
 
+        //1
         Categoria categoria = entityManager.find(Categoria.class, idCategoria);
+        //1
         Autor autor = entityManager.find(Autor.class, idAutor);
 
         Assert.state(categoria!= null, "Você está querendo cadastrar um livro com uma categoria que não existe no banco");

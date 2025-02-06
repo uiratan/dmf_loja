@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+//2
 @RestController
 public class EstadosController {
 
@@ -18,7 +19,9 @@ public class EstadosController {
 
     @PostMapping("/estados")
     @Transactional
+    //1
     public String cadastraEstado(@RequestBody @Valid NovoEstadoRequest novoEstadoRequest) {
+        //1
         Estado novoEstado = novoEstadoRequest.toModel(entityManager);
         entityManager.persist(novoEstado);
         return novoEstado.toString();
