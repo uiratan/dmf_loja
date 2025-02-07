@@ -15,15 +15,17 @@ public class CompraController {
 
     private final EntityManager entityManager;
     private final EstadoPertenceAPaisValidator estadoPertenceAPaisValidator;
+    private final CarrinhoValidator carrinhoValidator;
 
-    public CompraController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator) {
+    public CompraController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, CarrinhoValidator carrinhoValidator) {
         this.entityManager = entityManager;
         this.estadoPertenceAPaisValidator = estadoPertenceAPaisValidator;
+        this.carrinhoValidator = carrinhoValidator;
     }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(estadoPertenceAPaisValidator);
+        binder.addValidators(estadoPertenceAPaisValidator, carrinhoValidator);
     }
 
     @PostMapping("/compras")

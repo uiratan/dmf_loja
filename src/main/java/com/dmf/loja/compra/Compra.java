@@ -21,7 +21,8 @@ public class Compra {
     private String idEstado;
     @NotBlank private String telefone;
     @NotBlank private String cep;
-    @NotNull @DecimalMin("0.0") BigDecimal total;
+    @NotNull @DecimalMin(value = "0.00", inclusive = false, message = "o total deve ser maior que zero")
+    BigDecimal total;
     @NotNull List<ItemCompra> itens;
 
     public Compra(

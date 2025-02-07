@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record CarrinhoRequest(
-        @NotNull @DecimalMin("0.0") BigDecimal total,
+        @NotNull @DecimalMin(value = "0.00", inclusive = false, message = "o total deve ser maior que zero")
+        BigDecimal total,
         @NotNull @Valid List<ItemCarrinhoRequest> itens
 ) { }

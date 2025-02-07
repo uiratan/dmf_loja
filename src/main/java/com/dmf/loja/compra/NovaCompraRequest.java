@@ -58,13 +58,14 @@ public record NovaCompraRequest(
                 this.cep,
                 this.carrinho.total(),
                 itens
-
         );
     }
 
     public boolean temEstado() {
         return idEstado() != null;
     }
+
+
 
 }
 

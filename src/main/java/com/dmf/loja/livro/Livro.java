@@ -94,6 +94,7 @@ public class Livro {
         this.autor = autor;
     }
 
+    @Deprecated
     public Livro() {
     }
 
@@ -129,8 +130,6 @@ public class Livro {
         return dataPublicacao.format(DateTimeFormatter.ofPattern(formato));
     }
 
-
-    @Deprecated
     public Autor getAutor() {
         return autor;
     }
