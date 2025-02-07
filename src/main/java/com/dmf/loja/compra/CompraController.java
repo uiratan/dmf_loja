@@ -26,7 +26,7 @@ public class CompraController {
         binder.addValidators(estadoPertenceAPaisValidator);
     }
 
-    @PostMapping("/compra")
+    @PostMapping("/compras")
     //1
     public Compra realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest) {
         return novaCompraRequest.toModel(entityManager);

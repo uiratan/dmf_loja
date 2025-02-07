@@ -6,9 +6,12 @@ import com.dmf.loja.paisestado.Pais;
 import com.dmf.loja.validation.documento.CPFCNPJ;
 import com.dmf.loja.validation.existeid.ExisteId;
 import jakarta.persistence.EntityManager;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 //6
 public record NovaCompraRequest(
@@ -26,14 +29,20 @@ public record NovaCompraRequest(
         @ExisteId(fieldName = "id", domainClass = Estado.class)
         Long idEstado,
         @NotBlank String telefone,
-        @NotBlank String cep
+        @NotBlank String cep,
+        @NotNull @Valid CarrinhoRequest carrinho
 ) {
 
     public Compra toModel(final EntityManager entityManager) {
+        System.out.println(carrinho);
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
         //1 //1
         Estado estado = (idEstado != null) ? entityManager.find(Estado.class, idEstado) : null;
+
+        List<ItemCompra> itens = this.carrinho().itens().stream()
+                .map(item -> new ItemCompra(item.idLivro(), item.quantidade()))
+                .toList();
 
         return new Compra(
                 this.nome,
@@ -44,10 +53,12 @@ public record NovaCompraRequest(
                 this.complemento,
                 this.cidade,
                 pais.getNome(),
-                //1
                 (estado != null) ? estado.getNome() : null,
                 this.telefone,
-                this.cep
+                this.cep,
+                this.carrinho.total(),
+                itens
+
         );
     }
 

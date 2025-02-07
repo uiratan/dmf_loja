@@ -1,34 +1,59 @@
 package com.dmf.loja.compra;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.util.Assert;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 public class Compra {
-    @NotBlank private final String nome;
-    @NotBlank @Email private final String email;
-    @NotBlank private final String sobrenome;
-    @NotBlank private final String documento;
-    @NotBlank private final String endereco;
-    @NotBlank private final String complemento;
-    @NotBlank private final String cidade;
-    @NotNull private final String idPais;
-    private final String idEstado;
-    @NotBlank private final String telefone;
-    @NotBlank private final String cep;
+    @NotBlank private String nome;
+    @NotBlank @Email private String email;
+    @NotBlank private String sobrenome;
+    @NotBlank private String documento;
+    @NotBlank private String endereco;
+    @NotBlank private String complemento;
+    @NotBlank private String cidade;
+    @NotNull private String idPais;
+    private String idEstado;
+    @NotBlank private String telefone;
+    @NotBlank private String cep;
+    @NotNull @DecimalMin("0.0") BigDecimal total;
+    @NotNull List<ItemCompra> itens;
 
     public Compra(
-            String nome,
-            String email,
-            String sobrenome,
-            String documento,
-            String endereco,
-            String complemento,
-            String cidade,
-            String idPais,
-            String idEstado,
-            String telefone,
-            String cep) {
+            final String nome,
+            final String email,
+            final String sobrenome,
+            final String documento,
+            final String endereco,
+            final String complemento,
+            final String cidade,
+            final String idPais,
+            final String idEstado,
+            final String telefone,
+            final String cep,
+            final BigDecimal total,
+            final List<ItemCompra> itens) {
+        // Validações usando Spring Assert
+        Assert.hasText(nome, "O nome não pode estar vazio");
+        Assert.hasText(email, "O email não pode estar vazio");
+        Assert.hasText(sobrenome, "O sobrenome não pode estar vazio");
+        Assert.hasText(documento, "O documento não pode estar vazio");
+        Assert.hasText(endereco, "O endereço não pode estar vazio");
+        Assert.hasText(complemento, "O complemento não pode estar vazio");
+        Assert.hasText(cidade, "A cidade não pode estar vazia");
+        Assert.hasText(idPais, "O ID do país não pode estar vazio");
+        Assert.hasText(telefone, "O telefone não pode estar vazio");
+        Assert.hasText(cep, "O CEP não pode estar vazio");
+        Assert.notNull(total, "O total não pode ser nulo");
+        Assert.isTrue(total.compareTo(BigDecimal.ZERO) > 0, "O total deve ser maior a zero");
+        Assert.notNull(itens, "A lista de itens não pode ser nula");
+        Assert.notEmpty(itens, "A lista de itens não pode estar vazia");
+
         this.nome = nome;
         this.email = email;
         this.sobrenome = sobrenome;
@@ -40,49 +65,26 @@ public class Compra {
         this.idEstado = idEstado;
         this.telefone = telefone;
         this.cep = cep;
+        this.total = total;
+        this.itens = List.copyOf(itens);
     }
 
-    public String getNome() {
-        return nome;
+    @Deprecated
+    public Compra() {
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public String getDocumento() {
-        return documento;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public String getComplemento() {
-        return complemento;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public String getIdPais() {
-        return idPais;
-    }
-
-    public String getIdEstado() {
-        return idEstado;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public String getCep() {
-        return cep;
-    }
+    // Getters
+    public String getNome() { return nome; }
+    public String getEmail() { return email; }
+    public String getSobrenome() { return sobrenome; }
+    public String getDocumento() { return documento; }
+    public String getEndereco() { return endereco; }
+    public String getComplemento() { return complemento; }
+    public String getCidade() { return cidade; }
+    public String getIdPais() { return idPais; }
+    public String getIdEstado() { return idEstado; }
+    public String getTelefone() { return telefone; }
+    public String getCep() { return cep; }
+    public BigDecimal getTotal() { return total; }
+    public List<ItemCompra> getItens() { return itens; }
 }
