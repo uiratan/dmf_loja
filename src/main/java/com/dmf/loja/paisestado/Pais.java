@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Objects;
 
-//0
+//1
 @Entity
 public class Pais {
 
@@ -17,6 +18,7 @@ public class Pais {
     @NotBlank
     private String nome;
 
+    //1
     @OneToMany(mappedBy = "pais")
     private List<Estado> estados;
 
@@ -48,5 +50,17 @@ public class Pais {
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Pais pais = (Pais) o;
+        return Objects.equals(getNome(), pais.getNome());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getNome());
     }
 }
