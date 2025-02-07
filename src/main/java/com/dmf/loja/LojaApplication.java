@@ -2,6 +2,8 @@ package com.dmf.loja;
 
 import com.dmf.loja.autor.Autor;
 import com.dmf.loja.categoria.Categoria;
+import com.dmf.loja.paisestado.Estado;
+import com.dmf.loja.paisestado.Pais;
 import jakarta.persistence.EntityManager;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -18,10 +20,10 @@ public class LojaApplication {
         SpringApplication.run(LojaApplication.class, args);
     }
 
-
     @Component
     public static class DataLoader implements CommandLineRunner {
         private final EntityManager entityManager;
+
         public DataLoader(EntityManager entityManager) {
             this.entityManager = entityManager;
         }
@@ -31,6 +33,8 @@ public class LojaApplication {
         public void run(String... args) {
             carregarCategorias();
             carregarAutores();
+            carregarPaises();
+            carregarEstados();
         }
 
         private void carregarCategorias() {
@@ -48,6 +52,27 @@ public class LojaApplication {
             );
             for (Autor autor : autoresIniciais) {
                 entityManager.persist(autor);
+            }
+        }
+
+        private void carregarPaises() {
+            List<String> paisesIniciais = List.of("Brasil", "Estados Unidos", "Argentina");
+            for (String nome : paisesIniciais) {
+                entityManager.persist(new Pais(nome));
+            }
+        }
+
+        private void carregarEstados() {
+            final var brasil = entityManager.find(Pais.class, 1);
+            final var eua = entityManager.find(Pais.class, 2);
+
+            List<Estado> estadosIniciais = List.of(
+                    new Estado("Piaui", brasil),
+                    new Estado("Ceará", brasil),
+                    new Estado("Texas", eua)
+            );
+            for (Estado estado : estadosIniciais) {
+                entityManager.persist(estado);
             }
         }
     }

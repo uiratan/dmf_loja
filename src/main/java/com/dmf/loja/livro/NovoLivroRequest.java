@@ -17,25 +17,17 @@ public record NovoLivroRequest(
         //1
         @CampoUnico(fieldName = "titulo", domainClass = Livro.class)
         @NotBlank String titulo,
-
         @NotBlank @Size(max = 500) String resumo,
-
         @NotBlank String sumario,
-
         @NotNull @Min(20) BigDecimal preco,
-
         @NotNull @Min(100) Integer numeroPaginas,
-
         @CampoUnico(fieldName = "isbn", domainClass = Livro.class)
         @NotBlank String isbn,
-
         @JsonFormat(pattern = "dd/MM/yyy", shape = JsonFormat.Shape.STRING)
         @NotNull @Future LocalDate dataPublicacao,
-
         //1
         @ExisteId(fieldName = "id", domainClass = Categoria.class)
         @NotNull Long idCategoria,
-
         @ExisteId(fieldName = "id", domainClass = Autor.class)
         @NotNull Long idAutor
 ) {
