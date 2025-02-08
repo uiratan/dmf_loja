@@ -37,6 +37,14 @@ public class ApplicationControllerAdvice {
         return ValidationErrorsResponse.fromBindingResult(exception.getBindingResult(), messageService);
     }
 
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorsResponse handleIllegalArgumentException(RuntimeException exception) {
+        logger.warn("[400] - Business Validation Error: {}", exception.getMessage());
+        return ValidationErrorsResponse.fromMessage("Erro de validação: " + exception.getMessage());
+    }
+
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationErrorsResponse handleGenericException(Exception exception) {

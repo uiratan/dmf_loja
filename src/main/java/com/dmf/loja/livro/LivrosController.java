@@ -33,7 +33,7 @@ public class LivrosController {
     //1
     @GetMapping("livros")
     public List<LivrosResponse> listarLivros() {
-        return entityManager.createQuery("SELECT l.id, l.titulo FROM Livro l", LivrosResponse.class)
+        return entityManager.createQuery("SELECT l.id, l.titulo, l.preco FROM Livro l", LivrosResponse.class)
                 .getResultList();
     }
 

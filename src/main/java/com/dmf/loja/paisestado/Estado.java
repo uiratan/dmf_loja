@@ -13,12 +13,14 @@ public class Estado {
     @GeneratedValue
     private Long id;
 
-    @NotBlank private String nome;
+    @NotBlank
+    private String nome;
 
     //1
     @ManyToOne
     @JoinColumn(name = "pais_id", nullable = false)
-    @NotNull private Pais pais;
+    @NotNull
+    private Pais pais;
 
     public Estado(String nome, Pais pais) {
         Assert.hasText(nome, "O nome é obrigatório");
@@ -30,6 +32,19 @@ public class Estado {
 
     @Deprecated
     public Estado() {
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    // Método para verificar se o estado pertence ao país fornecido
+    public boolean pertenceAoPais(Pais pais) {
+        return this.pais != null && this.pais.equals(pais);
     }
 
     @Override
