@@ -1,4 +1,4 @@
-package com.dmf.loja.compra.entidades;
+package com.dmf.loja.compra;
 
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
+
+import java.util.function.Function;
 
 @Entity
 public class Compra {
@@ -29,8 +31,8 @@ public class Compra {
     @NotBlank private String cep;
     @Enumerated(EnumType.STRING)
     private StatusCompra statusCompra;
-    @OneToOne(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
-    @NotNull private Pedido pedido;
+//    @OneToOne(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @NotNull private Pedido pedido;
 
     public Compra(
             final String nome,
@@ -79,10 +81,10 @@ public class Compra {
         this.estado = estado;
     }
 
-    public void setPedido(Pedido pedido) {
-        Assert.notNull(pedido, "O pedido não pode ser nulo");
-        this.pedido = pedido;
-    }
+//    public void setPedido(Pedido pedido) {
+//        Assert.notNull(pedido, "O pedido não pode ser nulo");
+//        this.pedido = pedido;
+//    }
 
     // Getters
     public Long getId() { return id; }
@@ -98,5 +100,25 @@ public class Compra {
     public String getTelefone() { return telefone; }
     public String getCep() { return cep; }
     public StatusCompra getStatusCompra() { return statusCompra; }
-    public Pedido getPedido() { return pedido; }
+//    public Pedido getPedido() { return pedido; }
+
+
+    @Override
+    public String toString() {
+        return "Compra{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", documento='" + documento + '\'' +
+                ", endereco='" + endereco + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", cidade='" + cidade + '\'' +
+                ", pais=" + pais +
+                ", estado=" + estado +
+                ", telefone='" + telefone + '\'' +
+                ", cep='" + cep + '\'' +
+                ", statusCompra=" + statusCompra +
+                '}';
+    }
 }

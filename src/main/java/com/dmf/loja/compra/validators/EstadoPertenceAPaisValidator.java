@@ -1,6 +1,6 @@
 package com.dmf.loja.compra.validators;
 
-import com.dmf.loja.compra.dto.NovaCompraRequest;
+import com.dmf.loja.compra.NovaCompraRequest;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import jakarta.persistence.EntityManager;

@@ -68,7 +68,7 @@ public class LojaApplication {
                             "set of design best practices, experience-based techniques, and fundamental principles " +
                             "that facilitate the development of software projects facing complex domains.",
                     "Sumário do livro DDD...",
-                    new BigDecimal("45.90"),
+                    new BigDecimal("100"),
                     529,
                     "978-0321125217",
                     LocalDate.now().plusDays(30), // Data futura
@@ -81,7 +81,7 @@ public class LojaApplication {
                     "Patterns of Enterprise Application Architecture",
                     "Patterns of Enterprise Application Architecture is written in direct response to the stiff challenges that face enterprise application developers.",
                     "Sumário de PoEAA...",
-                    new BigDecimal("79.90"),
+                    new BigDecimal("50"),
                     560,
                     "978-0321127426",
                     LocalDate.now().plusDays(60), // Data futura

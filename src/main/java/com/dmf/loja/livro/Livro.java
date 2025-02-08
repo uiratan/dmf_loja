@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 //2
 @Entity
@@ -148,5 +149,17 @@ public class Livro {
                 ", categoria=" + categoria +
                 ", autor=" + autor +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Livro livro = (Livro) o;
+        return Objects.equals(getIsbn(), livro.getIsbn());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getIsbn());
     }
 }

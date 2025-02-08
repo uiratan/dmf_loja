@@ -1,9 +1,6 @@
-package com.dmf.loja.compra.dto;
+package com.dmf.loja.compra;
 
 
-import com.dmf.loja.compra.entidades.Compra;
-import com.dmf.loja.compra.entidades.ItemPedido;
-import com.dmf.loja.compra.entidades.Pedido;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import com.dmf.loja.validation.documento.CPFCNPJ;
@@ -14,7 +11,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.List;
+import java.util.function.Function;
 
 //6
 public record NovaCompraRequest(
@@ -40,7 +37,8 @@ public record NovaCompraRequest(
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
 
-        //1
+
+                //1
         Compra novaCompra = new Compra(
                 this.nome,
                 this.email,
@@ -59,13 +57,10 @@ public record NovaCompraRequest(
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
 
-        Pedido novoPedido = new Pedido(pedido.total(), novaCompra);
+        Pedido novoPedido = pedido.toModel(novaCompra, entityManager);
 
-        List<ItemPedido> itens = this.pedido().itens().stream()
-                .map(item -> new ItemPedido(item.idLivro(), item.quantidade(), novoPedido))
-                .toList();
-        novoPedido.setItens(itens);
-        novaCompra.setPedido(novoPedido);
+//        System.out.println(novoPedido);
+
 
         return novaCompra;
 

@@ -1,8 +1,5 @@
 package com.dmf.loja.compra;
 
-import com.dmf.loja.compra.dto.NovaCompraRequest;
-import com.dmf.loja.compra.entidades.Compra;
-import com.dmf.loja.compra.validators.ItensPedidoValidator;
 import com.dmf.loja.compra.validators.EstadoPertenceAPaisValidator;
 import com.dmf.loja.compra.validators.PaisTemEstadosValidator;
 import jakarta.persistence.EntityManager;
@@ -25,18 +22,16 @@ public class ComprasController {
     private final EntityManager entityManager;
     private final EstadoPertenceAPaisValidator estadoPertenceAPaisValidator;
     private final PaisTemEstadosValidator paisTemEstadosValidator;
-    private final ItensPedidoValidator itensPedidoValidator;
 
-    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, PaisTemEstadosValidator paisTemEstadosValidator, ItensPedidoValidator itensPedidoValidator) {
+    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, PaisTemEstadosValidator paisTemEstadosValidator) {
         this.entityManager = entityManager;
         this.estadoPertenceAPaisValidator = estadoPertenceAPaisValidator;
         this.paisTemEstadosValidator = paisTemEstadosValidator;
-        this.itensPedidoValidator = itensPedidoValidator;
     }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(estadoPertenceAPaisValidator, paisTemEstadosValidator, itensPedidoValidator);
+        binder.addValidators(estadoPertenceAPaisValidator, paisTemEstadosValidator);
     }
 
     @Transactional
