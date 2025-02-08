@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,6 +24,12 @@ public class Cupom {
             @NotBlank final String codigo,
             @NotNull @Positive final BigDecimal percentualDesconto,
             @Future final LocalDate dataValidade) {
+        Assert.hasText(codigo, "O código não pode ser nulo ou vazio");
+        Assert.notNull(percentualDesconto, "O percentual de desconto não pode ser nulo");
+        Assert.isTrue(percentualDesconto.compareTo(BigDecimal.ZERO) > 0, "O percentual de desconto deve ser positivo");
+        Assert.notNull(dataValidade, "A data de validade não pode ser nula");
+        Assert.isTrue(dataValidade.isAfter(LocalDate.now()), "A data de validade deve ser futura");
+
         this.codigo = codigo;
         this.percentualDesconto = percentualDesconto;
         this.dataValidade = dataValidade;
