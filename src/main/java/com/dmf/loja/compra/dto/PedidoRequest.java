@@ -8,9 +8,9 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.List;
 
-public record CarrinhoRequest(
+public record PedidoRequest(
         @NotNull @Positive
         BigDecimal total,
         @Size(min=1)
-        @NotNull @Valid List<ItemCarrinhoRequest> itens
+        @NotNull @Valid List<ItemPedidoRequest> itens
 ) { }

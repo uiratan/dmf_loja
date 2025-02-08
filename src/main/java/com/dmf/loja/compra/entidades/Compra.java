@@ -31,7 +31,7 @@ public class Compra {
     @NotBlank private String cep;
     @NotNull @Positive BigDecimal total;
     @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
-    @NotNull List<ItemCompra> itens = new ArrayList<>();
+    @NotNull List<ItemPedido> itens = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private StatusCompra statusCompra;
 
@@ -86,7 +86,7 @@ public class Compra {
         this.estado = estado;
     }
 
-    public void setItens(List<ItemCompra> itens) {
+    public void setItens(List<ItemPedido> itens) {
         Assert.notNull(itens, "A lista de itens não pode ser nula");
         Assert.notEmpty(itens, "A lista de itens não pode estar vazia");
 
@@ -108,6 +108,6 @@ public class Compra {
     public String getTelefone() { return telefone; }
     public String getCep() { return cep; }
     public BigDecimal getTotal() { return total; }
-    public List<ItemCompra> getItens() { return itens; }
+    public List<ItemPedido> getItens() { return itens; }
     public StatusCompra getStatusCompra() { return statusCompra; }
 }

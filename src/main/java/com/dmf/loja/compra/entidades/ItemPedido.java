@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Entity
-public class ItemCompra {
+public class ItemPedido {
     @Id @GeneratedValue private Long id;
     @NotNull Long idLivro;
     @Positive Integer quantidade;
@@ -13,13 +13,13 @@ public class ItemCompra {
     @JoinColumn(name = "compra_id", nullable = false)
     private Compra compra;
 
-    public ItemCompra(Long idLivro, Integer quantidade) {
+    public ItemPedido(Long idLivro, Integer quantidade) {
         this.idLivro = idLivro;
         this.quantidade = quantidade;
     }
 
     @Deprecated
-    public ItemCompra() {
+    public ItemPedido() {
     }
 
     public void setCompra(Compra compra) {

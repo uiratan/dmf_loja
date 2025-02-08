@@ -1,6 +1,6 @@
 package com.dmf.loja.compra.validators;
 
-import com.dmf.loja.compra.dto.CarrinhoRequest;
+import com.dmf.loja.compra.dto.PedidoRequest;
 import com.dmf.loja.compra.dto.NovaCompraRequest;
 import com.dmf.loja.livro.Livro;
 import jakarta.persistence.EntityManager;
@@ -31,7 +31,7 @@ public class CarrinhoValidator implements Validator {
         }
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
-        CarrinhoRequest carrinho = novaCompraRequest.carrinho();
+        PedidoRequest carrinho = novaCompraRequest.carrinho();
 
         if (carrinho.itens().isEmpty()) {
             errors.rejectValue("carrinho", null, "carrinho vazio");
@@ -44,7 +44,7 @@ public class CarrinhoValidator implements Validator {
         }
     }
 
-    private BigDecimal calcularPrecoTotal(CarrinhoRequest carrinho) {
+    private BigDecimal calcularPrecoTotal(PedidoRequest carrinho) {
         return carrinho.itens().stream()
                 .map(item ->
                         entityManager.find(Livro.class, item.idLivro()).getPreco()
