@@ -14,7 +14,7 @@ public record NovoEstadoRequest(
         @NotBlank String nome,
 
         //1
-        @ExisteId(fieldName = "id", domainClass = Pais.class)
+        @ExisteId(domainClass = Pais.class)
         @NotNull Long idPais
 ) {
     //1

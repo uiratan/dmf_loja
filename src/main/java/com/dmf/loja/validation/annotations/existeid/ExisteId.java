@@ -15,6 +15,6 @@ public @interface ExisteId {
     String message() default "este id não existe no banco de dados";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-    String fieldName();
+    String fieldName() default "id";
     Class<?> domainClass();
 }
