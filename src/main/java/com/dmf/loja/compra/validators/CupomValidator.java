@@ -42,14 +42,27 @@ public class CupomValidator implements Validator {
 
             Optional<Cupom> cupomEncontrado = cupomRepository.findByCodigo(codigoCupomMinusculas);
 
-            if (!cupomEncontrado.isPresent()) {
-                errors.rejectValue("codigoCupom", null, "este cupom não existe");
-                return;
-            }
+            // Ao invés de usar get() (que pode gerar NoSuchElementException),
+            // estamos lidando diretamente com a presença ou ausência do valor de forma segura.
+            cupomEncontrado.ifPresentOrElse(
+                    cupom -> {
+                        if (cupom.isExpirado()) {
+                            errors.rejectValue("codigoCupom", null, "este cupom está expirado");
+                        }
+                    },
+                    () -> errors.rejectValue("codigoCupom", null, "este cupom não existe")
+            );
 
-            if (cupomEncontrado.get().isExpirado()) {
-                errors.rejectValue("codigoCupom", null, "este cupom está expirado");
-            }
+//            Optional<Cupom> cupomEncontrado = cupomRepository.findByCodigo(codigoCupomMinusculas);
+//
+//            if (!cupomEncontrado.isPresent()) {
+//                errors.rejectValue("codigoCupom", null, "este cupom não existe");
+//                return;
+//            }
+//
+//            if (cupomEncontrado.get().isExpirado()) {
+//                errors.rejectValue("codigoCupom", null, "este cupom está expirado");
+//            }
 
         }
 
