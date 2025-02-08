@@ -11,11 +11,11 @@ import org.springframework.validation.Validator;
 import java.math.BigDecimal;
 
 @Component
-public class CarrinhoValidator implements Validator {
+public class ItensPedidoValidator implements Validator {
 
     private final EntityManager entityManager;
 
-    public CarrinhoValidator(EntityManager entityManager) {
+    public ItensPedidoValidator(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
@@ -31,15 +31,15 @@ public class CarrinhoValidator implements Validator {
         }
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
-        PedidoRequest carrinho = novaCompraRequest.carrinho();
+        PedidoRequest pedido = novaCompraRequest.carrinho();
 
-        if (carrinho.itens().isEmpty()) {
+        if (pedido.itens().isEmpty()) {
             errors.rejectValue("carrinho", null, "carrinho vazio");
         }
 
-        BigDecimal valorTotalCalculado = calcularPrecoTotal(carrinho);
+        BigDecimal valorTotalCalculado = calcularPrecoTotal(pedido);
 
-        if (carrinho.total().compareTo(valorTotalCalculado) !=0 ) {
+        if (pedido.total().compareTo(valorTotalCalculado) !=0 ) {
             errors.rejectValue("carrinho.total", null, "valor inconsistente");
         }
     }

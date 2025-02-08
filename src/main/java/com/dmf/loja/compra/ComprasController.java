@@ -2,7 +2,7 @@ package com.dmf.loja.compra;
 
 import com.dmf.loja.compra.dto.NovaCompraRequest;
 import com.dmf.loja.compra.entidades.Compra;
-import com.dmf.loja.compra.validators.CarrinhoValidator;
+import com.dmf.loja.compra.validators.ItensPedidoValidator;
 import com.dmf.loja.compra.validators.EstadoPertenceAPaisValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -23,17 +23,17 @@ public class ComprasController {
 
     private final EntityManager entityManager;
     private final EstadoPertenceAPaisValidator estadoPertenceAPaisValidator;
-    private final CarrinhoValidator carrinhoValidator;
+    private final ItensPedidoValidator itensPedidoValidator;
 
-    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, CarrinhoValidator carrinhoValidator) {
+    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, ItensPedidoValidator itensPedidoValidator) {
         this.entityManager = entityManager;
         this.estadoPertenceAPaisValidator = estadoPertenceAPaisValidator;
-        this.carrinhoValidator = carrinhoValidator;
+        this.itensPedidoValidator = itensPedidoValidator;
     }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(estadoPertenceAPaisValidator, carrinhoValidator);
+        binder.addValidators(estadoPertenceAPaisValidator, itensPedidoValidator);
     }
 
     @Transactional
