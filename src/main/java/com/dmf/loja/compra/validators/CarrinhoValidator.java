@@ -1,5 +1,7 @@
-package com.dmf.loja.compra;
+package com.dmf.loja.compra.validators;
 
+import com.dmf.loja.compra.dto.CarrinhoRequest;
+import com.dmf.loja.compra.dto.NovaCompraRequest;
 import com.dmf.loja.livro.Livro;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;

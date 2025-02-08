@@ -1,6 +1,9 @@
 package com.dmf.loja.compra;
 
-import com.dmf.loja.paisestado.EstadoPertenceAPaisValidator;
+import com.dmf.loja.compra.dto.NovaCompraRequest;
+import com.dmf.loja.compra.entidades.Compra;
+import com.dmf.loja.compra.validators.CarrinhoValidator;
+import com.dmf.loja.compra.validators.EstadoPertenceAPaisValidator;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -45,6 +48,6 @@ public class ComprasController {
                 .buildAndExpand(novaCompra.getId())
                 .toUri();
 
-        return ResponseEntity.created(locationOfNewCashCard).build();
+        return ResponseEntity.created(locationOfNewCashCard).body(novaCompra);
     }
 }

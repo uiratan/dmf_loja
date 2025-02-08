@@ -1,8 +1,7 @@
-package com.dmf.loja.compra;
+package com.dmf.loja.compra.dto;
 
 import com.dmf.loja.livro.Livro;
 import com.dmf.loja.validation.existeid.ExisteId;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 

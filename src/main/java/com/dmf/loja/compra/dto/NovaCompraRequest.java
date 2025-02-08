@@ -1,6 +1,8 @@
-package com.dmf.loja.compra;
+package com.dmf.loja.compra.dto;
 
 
+import com.dmf.loja.compra.entidades.Compra;
+import com.dmf.loja.compra.entidades.ItemCompra;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import com.dmf.loja.validation.documento.CPFCNPJ;
@@ -37,14 +39,9 @@ public record NovaCompraRequest(
         System.out.println(carrinho);
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
-        //1 //1
-        Estado estado = (idEstado != null) ? entityManager.find(Estado.class, idEstado) : null;
 
-        List<ItemCompra> itens = this.carrinho().itens().stream()
-                .map(item -> new ItemCompra(item.idLivro(), item.quantidade()))
-                .toList();
-
-        return new Compra(
+        //1
+        Compra novaCompra = new Compra(
                 this.nome,
                 this.email,
                 this.sobrenome,
@@ -52,13 +49,24 @@ public record NovaCompraRequest(
                 this.endereco,
                 this.complemento,
                 this.cidade,
-                pais.getNome(),
-                (estado != null) ? estado.getNome() : null,
+                pais,
                 this.telefone,
                 this.cep,
-                this.carrinho.total(),
-                itens
+                this.carrinho.total()
         );
+
+        //1
+        if (idEstado != null) {
+            novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
+        }
+
+        List<ItemCompra> itens = this.carrinho().itens().stream()
+                .map(item -> new ItemCompra(item.idLivro(), item.quantidade()))
+                .toList();
+        novaCompra.setItens(itens);
+
+        return novaCompra;
+
     }
 
     public boolean temEstado() {
