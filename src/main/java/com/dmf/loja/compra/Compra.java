@@ -1,10 +1,7 @@
 package com.dmf.loja.compra;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
@@ -26,8 +23,7 @@ public class Compra {
     private String idEstado;
     @NotBlank private String telefone;
     @NotBlank private String cep;
-    @NotNull @DecimalMin(value = "0.00", inclusive = false, message = "o total deve ser maior que zero")
-    BigDecimal total;
+    @NotNull @Positive BigDecimal total;
     @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
     @NotNull List<ItemCompra> itens = new ArrayList<>();
     @Enumerated(EnumType.STRING)

@@ -3,12 +3,13 @@ package com.dmf.loja.compra;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class ItemCompra {
     @Id @GeneratedValue private Long id;
-    @NotNull @Min(1) Long idLivro;
-    @NotNull @Min(1) Integer quantidade;
+    @NotNull Long idLivro;
+    @Positive Integer quantidade;
     @ManyToOne
     @JoinColumn(name = "compra_id", nullable = false)
     private Compra compra;
