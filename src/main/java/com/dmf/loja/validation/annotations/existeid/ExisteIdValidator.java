@@ -6,9 +6,10 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Objects;
 
 //1
-public class ExisteIdValidator implements ConstraintValidator<ExisteId, Long> {
+public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> {
 
     private String fieldName;
     private Class<?> domainClass;
@@ -23,7 +24,7 @@ public class ExisteIdValidator implements ConstraintValidator<ExisteId, Long> {
     }
 
     @Override
-    public boolean isValid(Long value, ConstraintValidatorContext context) {
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
         if (value == null) {
             return true;
         }

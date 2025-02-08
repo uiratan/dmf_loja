@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExisteId {
-    String message() default "este id não existe no banco de dados";
+    String message() default "este {fieldName} não existe no banco de dados";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     String fieldName() default "id";
