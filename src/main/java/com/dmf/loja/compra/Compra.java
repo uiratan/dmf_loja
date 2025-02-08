@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 
 import java.util.function.Function;
 
-//@Entity
+@Entity
 public class Compra {
     @Id @GeneratedValue private Long id;
     @NotBlank private String nome;
@@ -21,18 +21,12 @@ public class Compra {
     @NotBlank private String endereco;
     @NotBlank private String complemento;
     @NotBlank private String cidade;
-    @ManyToOne
-    @JoinColumn(name = "pais_id", nullable = false)
-    @NotNull private Pais pais;
-    @ManyToOne
-    @JoinColumn(name = "estado_id")
-    private Estado estado;
+    @NotNull @ManyToOne private Pais pais;
+    @ManyToOne private Estado estado;
     @NotBlank private String telefone;
     @NotBlank private String cep;
-    @Enumerated(EnumType.STRING)
-    private StatusCompra statusCompra;
-    @OneToOne(mappedBy = "compra")
-    @NotNull private Pedido pedido;
+    @Enumerated(EnumType.STRING) private StatusCompra statusCompra;
+    @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private Pedido pedido;
 
     public Compra(
             final String nome,
@@ -71,10 +65,6 @@ public class Compra {
         this.pedido = funcaoCriacaoPedido.apply(this);
 
         this.statusCompra = StatusCompra.INICIADA;
-    }
-
-    @Deprecated
-    public Compra() {
     }
 
     public void setEstado(@NotNull @Valid Estado estado) {

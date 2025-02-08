@@ -1,7 +1,7 @@
 package com.dmf.loja.compra;
 
 import com.dmf.loja.livro.Livro;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -11,11 +11,14 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-//@Entity
+@Entity
 public class Pedido {
 
-    @NotNull private final Compra compra;
-    @Size(min = 1) private final Set<ItemPedido> itens = new HashSet<>();
+    @Id @GeneratedValue private Long id;
+    @OneToOne
+    @NotNull private Compra compra;
+    @ElementCollection
+    @Size(min = 1) private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido(Compra compra, Set<ItemPedido> itens) {
         Assert.notNull(compra, "a compra não pode ser nulo");

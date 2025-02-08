@@ -1,6 +1,9 @@
 package com.dmf.loja.compra;
 
 import com.dmf.loja.livro.Livro;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -9,12 +12,13 @@ import org.springframework.util.Assert;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Embeddable
 public class ItemPedido {
 
     @ManyToOne
-    @NotNull private final Livro livro;
-    @Positive private final Integer quantidade;
-    @Positive private final BigDecimal precoMomento;
+    @NotNull private Livro livro;
+    @Positive private Integer quantidade;
+    @Positive private BigDecimal precoMomento;
 
     public ItemPedido(Livro livro, Integer quantidade) {
         Assert.notNull(livro, "o livro não pode ser nulo");
@@ -23,6 +27,10 @@ public class ItemPedido {
         this.livro = livro;
         this.quantidade = quantidade;
         this.precoMomento = livro.getPreco();
+    }
+
+    @Deprecated
+    public ItemPedido() {
     }
 
     public BigDecimal total() {
