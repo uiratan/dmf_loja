@@ -48,7 +48,6 @@ public class Estado {
         return "Estado{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", pais=" + pais +
                 '}';
     }
 }
