@@ -3,8 +3,8 @@ package com.dmf.loja.compra;
 
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
-import com.dmf.loja.validation.documento.CPFCNPJ;
-import com.dmf.loja.validation.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.documento.CPFCNPJ;
+import com.dmf.loja.validation.annotations.existeid.ExisteId;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

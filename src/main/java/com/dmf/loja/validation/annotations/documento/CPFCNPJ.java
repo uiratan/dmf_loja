@@ -1,4 +1,4 @@
-package com.dmf.loja.validation.documento;
+package com.dmf.loja.validation.annotations.documento;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

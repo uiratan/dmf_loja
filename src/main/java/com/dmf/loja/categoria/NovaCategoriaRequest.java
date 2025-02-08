@@ -1,6 +1,6 @@
 package com.dmf.loja.categoria;
 
-import com.dmf.loja.validation.campounicoannotation.CampoUnico;
+import com.dmf.loja.validation.annotations.campounico.CampoUnico;
 import jakarta.validation.constraints.NotBlank;
 
 //2

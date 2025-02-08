@@ -1,6 +1,6 @@
 package com.dmf.loja.autor;
 
-import com.dmf.loja.validation.campounicoannotation.CampoUnico;
+import com.dmf.loja.validation.annotations.campounico.CampoUnico;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

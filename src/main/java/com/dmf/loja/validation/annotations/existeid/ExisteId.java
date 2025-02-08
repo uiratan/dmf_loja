@@ -1,4 +1,4 @@
-package com.dmf.loja.validation.existeid;
+package com.dmf.loja.validation.annotations.existeid;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

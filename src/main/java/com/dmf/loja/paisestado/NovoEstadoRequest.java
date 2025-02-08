@@ -1,7 +1,7 @@
 package com.dmf.loja.paisestado;
 
-import com.dmf.loja.validation.campounicoannotation.CampoUnico;
-import com.dmf.loja.validation.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.campounico.CampoUnico;
+import com.dmf.loja.validation.annotations.existeid.ExisteId;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

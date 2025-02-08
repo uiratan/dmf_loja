@@ -2,8 +2,8 @@ package com.dmf.loja.livro;
 
 import com.dmf.loja.autor.Autor;
 import com.dmf.loja.categoria.Categoria;
-import com.dmf.loja.validation.campounicoannotation.CampoUnico;
-import com.dmf.loja.validation.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.campounico.CampoUnico;
+import com.dmf.loja.validation.annotations.existeid.ExisteId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.*;

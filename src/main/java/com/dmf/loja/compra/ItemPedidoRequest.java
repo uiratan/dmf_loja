@@ -1,7 +1,7 @@
 package com.dmf.loja.compra;
 
 import com.dmf.loja.livro.Livro;
-import com.dmf.loja.validation.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.existeid.ExisteId;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

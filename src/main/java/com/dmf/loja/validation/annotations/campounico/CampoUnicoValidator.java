@@ -1,4 +1,4 @@
-package com.dmf.loja.validation.campounicoannotation;
+package com.dmf.loja.validation.annotations.campounico;
 
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintValidator;
