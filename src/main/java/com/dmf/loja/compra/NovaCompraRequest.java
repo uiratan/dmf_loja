@@ -60,15 +60,30 @@ public record NovaCompraRequest(
 
         //1
         // informações não obrigatórias não entram pelo construtor
-        if (idEstado != null) {
+        if (isIdEstadoInformado()) {
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
 
         if (isCodigoCupomInformado()) {
-            Cupom cupomEncontrado = cupomRepository.findByCodigoAndDataValidadeAfter(this.codigoCupom.toLowerCase(), LocalDate.now())
+            Cupom cupomEncontrado = cupomRepository
+                    .findByCodigoAndDataValidadeAfter(this.codigoCupom.toLowerCase(), LocalDate.now())
                     .orElseThrow(() -> new IllegalArgumentException("cupom inválido"));
+
             novaCompra.setCupom(cupomEncontrado);
         }
+
+
+//        Optional.ofNullable(idEstado)
+//                .filter(aLong -> idEstado() != null)
+//                .flatMap(estadoRepository::findById)
+//                .ifPresent(novaCompra::setEstado);
+//
+//
+//        Optional.ofNullable(codigoCupom)
+//                .filter(codigo -> !codigo.isEmpty()) // Verifica se o código não está vazio
+//                .map(Long::valueOf)// transforma o codigoCupom em Long
+//                .flatMap(cupomRepository::findById) // Procura o cupom, se presente
+//                .ifPresent(novaCompra::setCupom); // Se o cupom for encontrado, atribui ao novaCompra
 
         return novaCompra;
 

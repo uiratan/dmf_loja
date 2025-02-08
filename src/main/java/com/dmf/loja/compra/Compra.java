@@ -71,12 +71,14 @@ public class Compra {
     }
 
     public void setEstado(@NotNull @Valid Estado estado) {
+        if (estado == null) return;
         Assert.notNull(this.pais, "estado não pode ser associado enquanto o país nulo");
         Assert.isTrue(estado.pertenceAoPais(this.pais), "estado deve pertencer ao país informado");
         this.estado = estado;
     }
 
     public void setCupom(@NotNull @Valid Cupom cupom) {
+        if (cupom == null) return;
         Assert.isTrue(!this.isCompraSalva(), "cupom não pode ser aplicado a uma compra existente");
         Assert.isTrue(!this.isCupomAplicado(), "o cupom de uma compra não pode ser alterado");
 
