@@ -16,5 +16,6 @@ public @interface ExisteId {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
     String fieldName() default "id";
+    boolean isCaseSensitive() default false;
     Class<?> domainClass();
 }

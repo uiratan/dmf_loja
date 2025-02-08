@@ -12,7 +12,9 @@ import java.util.Objects;
 public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> {
 
     private String fieldName;
+    private boolean isCaseSensitive;
     private Class<?> domainClass;
+
 
     @Autowired
     private EntityManager entityManager;
@@ -20,7 +22,9 @@ public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> 
     @Override
     public void initialize(ExisteId constraintAnnotation) {
         this.fieldName = constraintAnnotation.fieldName();
+        this.isCaseSensitive = constraintAnnotation.isCaseSensitive();
         this.domainClass = constraintAnnotation.domainClass();
+
     }
 
     @Override
@@ -29,6 +33,9 @@ public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> 
             return true;
         }
 
+        if (!isCaseSensitive) {
+            value = value.toString().toLowerCase();
+        }
         String query = String.format("SELECT 1 FROM %s WHERE %s = :value", domainClass.getSimpleName(), fieldName);
 
         List<?> result = entityManager.createQuery(query)
