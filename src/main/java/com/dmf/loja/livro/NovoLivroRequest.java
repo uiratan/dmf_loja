@@ -3,7 +3,7 @@ package com.dmf.loja.livro;
 import com.dmf.loja.autor.Autor;
 import com.dmf.loja.categoria.Categoria;
 import com.dmf.loja.validation.annotations.campounico.CampoUnico;
-import com.dmf.loja.validation.annotations.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.existeid.ExisteNoBanco;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.*;
@@ -26,9 +26,9 @@ public record NovoLivroRequest(
         @JsonFormat(pattern = "dd/MM/yyy", shape = JsonFormat.Shape.STRING)
         @NotNull @Future LocalDate dataPublicacao,
         //1
-        @ExisteId(fieldName = "id", domainClass = Categoria.class)
+        @ExisteNoBanco(fieldName = "id", domainClass = Categoria.class)
         @NotNull Long idCategoria,
-        @ExisteId(fieldName = "id", domainClass = Autor.class)
+        @ExisteNoBanco(fieldName = "id", domainClass = Autor.class)
         @NotNull Long idAutor
 ) {
     public Livro toModel(EntityManager entityManager) {

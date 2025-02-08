@@ -1,10 +1,12 @@
 package com.dmf.loja.compra;
 
 
+import com.dmf.loja.cupom.Cupom;
+import com.dmf.loja.cupom.CupomRepository;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import com.dmf.loja.validation.annotations.documento.CPFCNPJ;
-import com.dmf.loja.validation.annotations.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.existeid.ExisteNoBanco;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -24,20 +26,39 @@ public record NovaCompraRequest(
         @NotBlank String complemento,
         @NotBlank String cidade,
         //1
-        @ExisteId(fieldName = "id", domainClass = Pais.class)
+        @ExisteNoBanco(domainClass = Pais.class)
         @NotNull Long idPais,
-        @ExisteId(fieldName = "id", domainClass = Estado.class)
+        @ExisteNoBanco(fieldName = "id", domainClass = Estado.class)
         Long idEstado,
         @NotBlank String telefone,
         @NotBlank String cep,
-        @NotNull @Valid PedidoRequest pedido
+        @NotNull @Valid PedidoRequest pedido,
+        @ExisteNoBanco(fieldName = "codigo", domainClass = Cupom.class)
+        @NotBlank String cupom
 ) {
 
-    public Compra toModel(final EntityManager entityManager) {
+    public Compra toModel(final EntityManager entityManager, final CupomRepository cupomRepository) {
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
 
         Function<Compra, Pedido> funcaoCriacaoPedido = pedido.toModel(entityManager);
+
+        /**
+         o código do cupom precisa ser válido
+         o cupom precisa ser válido ainda
+         uma vez associado o cupom, uma compra nunca pode ter essa informação alterada.
+         O cupom só pode ser associada com uma compra que ainda não foi registrada no banco de dados (esse daqui eu não implementei)
+         */
+
+//        boolean cupomValido = cupomRepository.existsByCodigoAndDataValidadeAfter(this.cupom.toLowerCase(), LocalDate.now());
+////        boolean cupomValido = cupomRepository.isCupomValido("MEUCUPOM", LocalDate.now());
+//
+//        Cupom cupom = cupomRepository.findByCodigo(this.cupom.toLowerCase())
+//                .orElseThrow(() -> new IllegalArgumentException("cupom nao cadastrado"));
+//
+//        if (cupom.isCupomValido()) {
+//
+//        }
 
         //1
         Compra novaCompra = new Compra(
@@ -51,13 +72,16 @@ public record NovaCompraRequest(
                 pais,
                 this.telefone,
                 this.cep,
-                funcaoCriacaoPedido
+                funcaoCriacaoPedido,
+                null
         );
 
         //1
         if (idEstado != null) {
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
+
+
 
         return novaCompra;
 

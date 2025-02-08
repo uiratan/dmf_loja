@@ -20,6 +20,6 @@ public record NovoCupomRequest(
 ) {
 
     public Cupom toModel() {
-        return new Cupom(codigo, percentualDesconto, dataValidade);
+        return new Cupom(codigo.toLowerCase(), percentualDesconto, dataValidade);
     }
 }
