@@ -8,10 +8,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Constraint(validatedBy = ExisteIdValidator.class)
+@Constraint(validatedBy = ExisteNoBancoValidator.class)
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ExisteId {
+public @interface ExisteNoBanco {
     String message() default "este {fieldName} não existe no banco de dados";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

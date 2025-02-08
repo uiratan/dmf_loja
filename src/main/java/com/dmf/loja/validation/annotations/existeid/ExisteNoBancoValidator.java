@@ -6,10 +6,9 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Objects;
 
 //1
-public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> {
+public class ExisteNoBancoValidator implements ConstraintValidator<ExisteNoBanco, Object> {
 
     private String fieldName;
     private boolean isCaseSensitive;
@@ -20,7 +19,7 @@ public class ExisteIdValidator implements ConstraintValidator<ExisteId, Object> 
     private EntityManager entityManager;
 
     @Override
-    public void initialize(ExisteId constraintAnnotation) {
+    public void initialize(ExisteNoBanco constraintAnnotation) {
         this.fieldName = constraintAnnotation.fieldName();
         this.isCaseSensitive = constraintAnnotation.isCaseSensitive();
         this.domainClass = constraintAnnotation.domainClass();
