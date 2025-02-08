@@ -117,16 +117,20 @@ public class LojaApplication {
         }
 
         private void carregaCupons() {
-            Cupom cupom1 = new Cupom("10agora", BigDecimal.TEN, LocalDate.now().plusDays(10));
-            Cupom cupom2 = new Cupom("vintao", BigDecimal.valueOf(20), LocalDate.now().plusDays(10));
+            LocalDate dataValidadeFutura = LocalDate.now().plusDays(10);
+            LocalDate dataValidadeAntiga = LocalDate.now().minusDays(10);
 
-            Cupom antigo = new Cupom("ANTIGO", BigDecimal.valueOf(20), LocalDate.now().minusDays(10));
+            List<Cupom> cupons = List.of(
+                    new Cupom("10agora", BigDecimal.TEN, dataValidadeFutura),
+                    new Cupom("vintao", BigDecimal.valueOf(20), dataValidadeFutura)
+//                    new Cupom("ANTIGO", BigDecimal.valueOf(20), dataValidadeAntiga)
+            );
 
-            entityManager.persist(cupom1);
-            entityManager.persist(cupom2);
-            entityManager.persist(antigo);
+            for (Cupom cupom : cupons) {
+                entityManager.persist(cupom);
+            }
 
-            System.out.println(cupom1.toString() + " - " + cupom2.toString());
+            System.out.println(cupons);
 
         }
     }
