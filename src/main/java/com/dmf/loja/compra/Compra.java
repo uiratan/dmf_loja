@@ -1,5 +1,6 @@
 package com.dmf.loja.compra;
 
+import com.dmf.loja.cupom.Cupom;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import jakarta.persistence.*;
@@ -27,6 +28,7 @@ public class Compra {
     @NotBlank private String cep;
     @Enumerated(EnumType.STRING) private StatusCompra statusCompra;
     @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private Pedido pedido;
+    @ManyToOne Cupom cupom;
 
     public Compra(
             final String nome,
@@ -38,7 +40,8 @@ public class Compra {
             final String cidade,
             final Pais pais,
             final String telefone,
-            final String cep, Function<Compra, Pedido> funcaoCriacaoPedido) {
+            final String cep, Function<Compra, Pedido> funcaoCriacaoPedido
+    ) {
 
         // Validações usando Spring Assert
         Assert.hasText(nome, "O nome não pode estar vazio");
@@ -73,8 +76,23 @@ public class Compra {
         this.estado = estado;
     }
 
+    public void setCupom(@NotNull @Valid Cupom cupom) {
+        Assert.isTrue(!this.isCompraSalva(), "cupom não pode ser aplicado a uma compra existente");
+        Assert.isTrue(!this.isCupomAplicado(), "o cupom de uma compra não pode ser alterado");
+
+        this.cupom = cupom;
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public boolean isCupomAplicado() {
+        return this.cupom != null;
+    }
+
+    public boolean isCompraSalva() {
+        return this.id != null;
     }
 
     @Override
@@ -94,6 +112,7 @@ public class Compra {
                 ", cep='" + cep + '\'' +
                 ", statusCompra=" + statusCompra +
                 ", pedido=" + pedido +
+                ", cupom=" + cupom +
                 '}';
     }
 }

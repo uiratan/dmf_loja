@@ -1,18 +1,16 @@
 package com.dmf.loja.compra.validators;
 
 import com.dmf.loja.compra.NovaCompraRequest;
+import com.dmf.loja.cupom.Cupom;
 import com.dmf.loja.cupom.CupomRepository;
-import com.dmf.loja.paisestado.Estado;
-import com.dmf.loja.paisestado.Pais;
-import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.time.LocalDate;
+import java.util.Optional;
 
 /**
- * Valida se a data do cupom está válida
+ * Valida a existência do cupom e se a data do cupom está válida
  */
 
 @Component
@@ -35,13 +33,28 @@ public class CupomValidator implements Validator {
             return;
         }
 
-        String codigoCupom = ((NovaCompraRequest) target).cupom();
+        NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
 
-        boolean cupomNãoExpirado = cupomRepository.existsByCodigoAndDataValidadeAfter(codigoCupom.toLowerCase(), LocalDate.now());
+        // Se o cupom for nulo ou nao for informado um codigo, nao valida nada
+        if (novaCompraRequest.isCodigoCupomInformado()) {
 
-        if (!cupomNãoExpirado) {
-            errors.rejectValue("cupom", null, "este cupom está expirado");
+            String codigoCupomMinusculas = novaCompraRequest.codigoCupom().toLowerCase();
+
+            Optional<Cupom> cupomEncontrado = cupomRepository.findByCodigo(codigoCupomMinusculas);
+
+            if (!cupomEncontrado.isPresent()) {
+                errors.rejectValue("codigoCupom", null, "este cupom não existe");
+                return;
+            }
+
+            if (cupomEncontrado.get().isExpirado()) {
+                errors.rejectValue("codigoCupom", null, "este cupom está expirado");
+            }
+
         }
+
     }
 
 }
+
+

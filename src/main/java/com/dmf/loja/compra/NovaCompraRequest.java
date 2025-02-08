@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.function.Function;
 
 //6
@@ -33,8 +34,7 @@ public record NovaCompraRequest(
         @NotBlank String telefone,
         @NotBlank String cep,
         @NotNull @Valid PedidoRequest pedido,
-        @ExisteNoBanco(fieldName = "codigo", domainClass = Cupom.class)
-        @NotBlank String cupom
+        String codigoCupom
 ) {
 
     public Compra toModel(final EntityManager entityManager, final CupomRepository cupomRepository) {
@@ -42,23 +42,6 @@ public record NovaCompraRequest(
         Pais pais = entityManager.find(Pais.class, idPais);
 
         Function<Compra, Pedido> funcaoCriacaoPedido = pedido.toModel(entityManager);
-
-        /**
-         o código do cupom precisa ser válido
-         o cupom precisa ser válido ainda
-         uma vez associado o cupom, uma compra nunca pode ter essa informação alterada.
-         O cupom só pode ser associada com uma compra que ainda não foi registrada no banco de dados (esse daqui eu não implementei)
-         */
-
-//        boolean cupomValido = cupomRepository.existsByCodigoAndDataValidadeAfter(this.cupom.toLowerCase(), LocalDate.now());
-////        boolean cupomValido = cupomRepository.isCupomValido("MEUCUPOM", LocalDate.now());
-//
-//        Cupom cupom = cupomRepository.findByCodigo(this.cupom.toLowerCase())
-//                .orElseThrow(() -> new IllegalArgumentException("cupom nao cadastrado"));
-//
-//        if (cupom.isCupomValido()) {
-//
-//        }
 
         //1
         Compra novaCompra = new Compra(
@@ -72,24 +55,33 @@ public record NovaCompraRequest(
                 pais,
                 this.telefone,
                 this.cep,
-                funcaoCriacaoPedido,
-                null
+                funcaoCriacaoPedido
         );
 
         //1
+        // informações não obrigatórias não entram pelo construtor
         if (idEstado != null) {
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
 
-
+        if (isCodigoCupomInformado()) {
+            Cupom cupomEncontrado = cupomRepository.findByCodigoAndDataValidadeAfter(this.codigoCupom.toLowerCase(), LocalDate.now())
+                    .orElseThrow(() -> new IllegalArgumentException("cupom inválido"));
+            novaCompra.setCupom(cupomEncontrado);
+        }
 
         return novaCompra;
 
     }
 
-    public boolean temEstado() {
+    public boolean isCodigoCupomInformado() {
+        return this.codigoCupom != null && !this.codigoCupom.isEmpty();
+    }
+
+    public boolean isIdEstadoInformado() {
         return idEstado() != null;
     }
+
 
 }
 

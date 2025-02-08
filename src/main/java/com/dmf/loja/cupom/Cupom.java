@@ -28,14 +28,22 @@ public class Cupom {
         Assert.notNull(percentualDesconto, "O percentual de desconto não pode ser nulo");
         Assert.isTrue(percentualDesconto.compareTo(BigDecimal.ZERO) > 0, "O percentual de desconto deve ser positivo");
         Assert.notNull(dataValidade, "A data de validade não pode ser nula");
-        Assert.isTrue(dataValidade.isAfter(LocalDate.now()), "A data de validade deve ser futura");
-        this.codigo = codigo;
+//        Assert.isTrue(dataValidade.isAfter(LocalDate.now()), "A data de validade deve ser futura");
+
+        this.codigo = codigo.toLowerCase();
         this.percentualDesconto = percentualDesconto;
         this.dataValidade = dataValidade;
     }
 
+    @Deprecated
+    public Cupom () {}
+
     public String getDataValidadeComFormato(String formato) {
         return dataValidade.format(DateTimeFormatter.ofPattern(formato));
+    }
+
+    public boolean isExpirado() {
+        return this.dataValidade.isBefore(LocalDate.now());
     }
 
     @Override
