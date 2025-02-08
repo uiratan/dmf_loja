@@ -29,7 +29,6 @@ public class Cupom {
         Assert.isTrue(percentualDesconto.compareTo(BigDecimal.ZERO) > 0, "O percentual de desconto deve ser positivo");
         Assert.notNull(dataValidade, "A data de validade não pode ser nula");
         Assert.isTrue(dataValidade.isAfter(LocalDate.now()), "A data de validade deve ser futura");
-
         this.codigo = codigo;
         this.percentualDesconto = percentualDesconto;
         this.dataValidade = dataValidade;
