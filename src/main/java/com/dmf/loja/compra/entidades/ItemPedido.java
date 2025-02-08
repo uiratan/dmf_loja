@@ -10,22 +10,18 @@ public class ItemPedido {
     @NotNull Long idLivro;
     @Positive Integer quantidade;
     @ManyToOne
-    @JoinColumn(name = "compra_id", nullable = false)
-    private Compra compra;
+    @JoinColumn(name = "pedido_id", nullable = false)
+    private Pedido pedido;
 
-    public ItemPedido(Long idLivro, Integer quantidade) {
+    public ItemPedido(Long idLivro, Integer quantidade, Pedido pedido) {
         this.idLivro = idLivro;
         this.quantidade = quantidade;
+        this.pedido = pedido;
     }
 
     @Deprecated
     public ItemPedido() {
     }
-
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-    }
-
 
     public Long getIdLivro() { return idLivro; }
     public Integer getQuantidade() { return quantidade; }

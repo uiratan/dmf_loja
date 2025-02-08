@@ -4,12 +4,10 @@ import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 public class Compra {
@@ -29,11 +27,10 @@ public class Compra {
     private Estado estado;
     @NotBlank private String telefone;
     @NotBlank private String cep;
-    @NotNull @Positive BigDecimal total;
-    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
-    @NotNull List<ItemPedido> itens = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private StatusCompra statusCompra;
+    @OneToOne(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull private Pedido pedido;
 
     public Compra(
             final String nome,
@@ -45,8 +42,7 @@ public class Compra {
             final String cidade,
             final Pais pais,
             final String telefone,
-            final String cep,
-            final BigDecimal total) {
+            final String cep) {
 
         // Validações usando Spring Assert
         Assert.hasText(nome, "O nome não pode estar vazio");
@@ -59,8 +55,6 @@ public class Compra {
         Assert.notNull(pais, "O país não pode ser nulo");
         Assert.hasText(telefone, "O telefone não pode estar vazio");
         Assert.hasText(cep, "O CEP não pode estar vazio");
-        Assert.notNull(total, "O total não pode ser nulo");
-        Assert.isTrue(total.compareTo(BigDecimal.ZERO) > 0, "O total deve ser maior a zero");
 
         this.nome = nome;
         this.email = email;
@@ -72,7 +66,6 @@ public class Compra {
         this.pais = pais;
         this.telefone = telefone;
         this.cep = cep;
-        this.total = total;
         this.statusCompra = StatusCompra.INICIADA;
     }
 
@@ -86,12 +79,9 @@ public class Compra {
         this.estado = estado;
     }
 
-    public void setItens(List<ItemPedido> itens) {
-        Assert.notNull(itens, "A lista de itens não pode ser nula");
-        Assert.notEmpty(itens, "A lista de itens não pode estar vazia");
-
-        this.itens = List.copyOf(itens);
-        this.itens.forEach(item -> item.setCompra(this));
+    public void setPedido(Pedido pedido) {
+        Assert.notNull(pedido, "O pedido não pode ser nulo");
+        this.pedido = pedido;
     }
 
     // Getters
@@ -107,7 +97,6 @@ public class Compra {
     public Estado getEstado() { return estado; }
     public String getTelefone() { return telefone; }
     public String getCep() { return cep; }
-    public BigDecimal getTotal() { return total; }
-    public List<ItemPedido> getItens() { return itens; }
     public StatusCompra getStatusCompra() { return statusCompra; }
+    public Pedido getPedido() { return pedido; }
 }

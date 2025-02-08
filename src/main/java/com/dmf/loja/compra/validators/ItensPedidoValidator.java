@@ -31,16 +31,16 @@ public class ItensPedidoValidator implements Validator {
         }
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
-        PedidoRequest pedido = novaCompraRequest.carrinho();
+        PedidoRequest pedido = novaCompraRequest.pedido();
 
         if (pedido.itens().isEmpty()) {
-            errors.rejectValue("carrinho", null, "carrinho vazio");
+            errors.rejectValue("pedido", null, "pedido vazio");
         }
 
         BigDecimal valorTotalCalculado = calcularPrecoTotal(pedido);
 
         if (pedido.total().compareTo(valorTotalCalculado) !=0 ) {
-            errors.rejectValue("carrinho.total", null, "valor inconsistente");
+            errors.rejectValue("pedido.total", null, "valor inconsistente");
         }
     }
 

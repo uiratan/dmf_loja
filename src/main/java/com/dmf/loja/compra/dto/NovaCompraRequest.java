@@ -3,6 +3,7 @@ package com.dmf.loja.compra.dto;
 
 import com.dmf.loja.compra.entidades.Compra;
 import com.dmf.loja.compra.entidades.ItemPedido;
+import com.dmf.loja.compra.entidades.Pedido;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import com.dmf.loja.validation.documento.CPFCNPJ;
@@ -32,11 +33,10 @@ public record NovaCompraRequest(
         Long idEstado,
         @NotBlank String telefone,
         @NotBlank String cep,
-        @NotNull @Valid PedidoRequest carrinho
+        @NotNull @Valid PedidoRequest pedido
 ) {
 
     public Compra toModel(final EntityManager entityManager) {
-        System.out.println(carrinho);
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
 
@@ -51,8 +51,7 @@ public record NovaCompraRequest(
                 this.cidade,
                 pais,
                 this.telefone,
-                this.cep,
-                this.carrinho.total()
+                this.cep
         );
 
         //1
@@ -60,10 +59,13 @@ public record NovaCompraRequest(
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
 
-        List<ItemPedido> itens = this.carrinho().itens().stream()
-                .map(item -> new ItemPedido(item.idLivro(), item.quantidade()))
+        Pedido novoPedido = new Pedido(pedido.total(), novaCompra);
+
+        List<ItemPedido> itens = this.pedido().itens().stream()
+                .map(item -> new ItemPedido(item.idLivro(), item.quantidade(), novoPedido))
                 .toList();
-        novaCompra.setItens(itens);
+        novoPedido.setItens(itens);
+        novaCompra.setPedido(novoPedido);
 
         return novaCompra;
 
