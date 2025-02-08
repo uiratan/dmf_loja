@@ -1,10 +1,11 @@
 package com.dmf.loja.paisestado;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.util.Assert;
 
-import java.util.List;
 import java.util.Objects;
 
 //1
@@ -18,10 +19,6 @@ public class Pais {
     @NotBlank
     private String nome;
 
-    //1
-    @OneToMany(mappedBy = "pais")
-    private List<Estado> estados;
-
     public Pais(String nome) {
         Assert.hasText(nome, "O nome é obrigatório");
 
@@ -34,14 +31,6 @@ public class Pais {
 
     public String getNome() {
         return nome;
-    }
-
-    public List<Estado> getEstados() {
-        return estados;
-    }
-
-    public boolean hasEstados() {
-        return estados != null && !estados.isEmpty();
     }
 
     @Override

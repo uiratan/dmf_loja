@@ -27,14 +27,9 @@ public class EstadoPertenceAPaisValidator implements Validator {
         }
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
-        Pais pais = entityManager.find(Pais.class, novaCompraRequest.idPais());
-        if (pais.hasEstados()) {
-            if (!novaCompraRequest.temEstado()) {
-                errors.rejectValue("idEstado", null, "um estado deve ser informado");
-            }
-        }
 
         if (novaCompraRequest.temEstado()) {
+            Pais pais = entityManager.find(Pais.class, novaCompraRequest.idPais());
             Estado estado = entityManager.find(Estado.class, novaCompraRequest.idEstado());
             if (!estado.pertenceAoPais(pais)) {
                 errors.rejectValue("idEstado", null, "este estado não é o do país selecionado");
