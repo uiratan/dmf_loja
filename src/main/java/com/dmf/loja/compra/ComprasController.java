@@ -1,7 +1,9 @@
 package com.dmf.loja.compra;
 
+import com.dmf.loja.compra.validators.CupomValidator;
 import com.dmf.loja.compra.validators.EstadoPertenceAPaisValidator;
 import com.dmf.loja.compra.validators.PaisTemEstadosValidator;
+import com.dmf.loja.cupom.CupomRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,23 +24,28 @@ public class ComprasController {
     private final EntityManager entityManager;
     private final EstadoPertenceAPaisValidator estadoPertenceAPaisValidator;
     private final PaisTemEstadosValidator paisTemEstadosValidator;
+    private final CupomValidator cupomValidator;
 
-    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, PaisTemEstadosValidator paisTemEstadosValidator) {
+    private final CupomRepository cupomRepository;
+
+    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, PaisTemEstadosValidator paisTemEstadosValidator, CupomValidator cupomValidator, CupomRepository cupomRepository) {
         this.entityManager = entityManager;
         this.estadoPertenceAPaisValidator = estadoPertenceAPaisValidator;
         this.paisTemEstadosValidator = paisTemEstadosValidator;
+        this.cupomValidator = cupomValidator;
+        this.cupomRepository = cupomRepository;
     }
 
     @InitBinder
     public void init(WebDataBinder binder) {
-        binder.addValidators(estadoPertenceAPaisValidator, paisTemEstadosValidator);
+        binder.addValidators(estadoPertenceAPaisValidator, paisTemEstadosValidator, cupomValidator);
     }
 
     @Transactional
     @PostMapping("/compras")
     //1
-    public ResponseEntity<Compra> realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest, UriComponentsBuilder ucb) {
-        Compra novaCompra = novaCompraRequest.toModel(entityManager);
+    public ResponseEntity<String> realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest, UriComponentsBuilder ucb) {
+        Compra novaCompra = novaCompraRequest.toModel(entityManager, cupomRepository);
         entityManager.persist(novaCompra);
 
         URI locationOfNewCashCard = ucb
@@ -46,7 +53,7 @@ public class ComprasController {
                 .buildAndExpand(novaCompra.getId())
                 .toUri();
 
-        return ResponseEntity.created(locationOfNewCashCard).body(novaCompra);
+        return ResponseEntity.created(locationOfNewCashCard).body(novaCompra.toString());
 //        return novaCompra.toString();
     }
 }
