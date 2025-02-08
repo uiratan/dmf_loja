@@ -1,9 +1,8 @@
 package com.dmf.loja.compra.validators;
 
 import com.dmf.loja.compra.dto.NovaCompraRequest;
-import com.dmf.loja.paisestado.Estado;
-import com.dmf.loja.paisestado.Pais;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -30,12 +29,21 @@ public class PaisTemEstadosValidator implements Validator {
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
 
-        if (novaCompraRequest.temEstado()) {
-            Pais pais = entityManager.find(Pais.class, novaCompraRequest.idPais());
-            Estado estado = entityManager.find(Estado.class, novaCompraRequest.idEstado());
-            if (!estado.pertenceAoPais(pais)) {
-                errors.rejectValue("idEstado", null, "este estado não é o do país selecionado");
-            }
+        if (paisPossuiEstado(novaCompraRequest) && estadoNaoInformado(novaCompraRequest)) {
+            errors.rejectValue("idEstado", null, "este país precisa de um estado");
         }
+    }
+
+    private boolean estadoNaoInformado(NovaCompraRequest novaCompraRequest) {
+        return novaCompraRequest.idEstado() == null;
+    }
+
+    private boolean paisPossuiEstado(NovaCompraRequest novaCompraRequest) {
+        String jpql = "SELECT COUNT(e) FROM Estado e WHERE e.pais.id = :paisId";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("paisId", novaCompraRequest.idPais());
+        Long count = query.getSingleResult();
+        return count > 0;
+
     }
 }
