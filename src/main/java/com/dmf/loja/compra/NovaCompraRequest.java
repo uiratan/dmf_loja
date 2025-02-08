@@ -65,8 +65,6 @@ public record NovaCompraRequest(
         return idEstado() != null;
     }
 
-
-
 }
 
 

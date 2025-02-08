@@ -2,22 +2,27 @@ package com.dmf.loja.compra;
 
 import com.dmf.loja.paisestado.EstadoPertenceAPaisValidator;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 //1
 @RestController
-public class CompraController {
+public class ComprasController {
 
     private final EntityManager entityManager;
     private final EstadoPertenceAPaisValidator estadoPertenceAPaisValidator;
     private final CarrinhoValidator carrinhoValidator;
 
-    public CompraController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, CarrinhoValidator carrinhoValidator) {
+    public ComprasController(EntityManager entityManager, EstadoPertenceAPaisValidator estadoPertenceAPaisValidator, CarrinhoValidator carrinhoValidator) {
         this.entityManager = entityManager;
         this.estadoPertenceAPaisValidator = estadoPertenceAPaisValidator;
         this.carrinhoValidator = carrinhoValidator;
@@ -28,9 +33,18 @@ public class CompraController {
         binder.addValidators(estadoPertenceAPaisValidator, carrinhoValidator);
     }
 
+    @Transactional
     @PostMapping("/compras")
     //1
-    public Compra realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest) {
-        return novaCompraRequest.toModel(entityManager);
+    public ResponseEntity<Compra> realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest, UriComponentsBuilder ucb) {
+        Compra novaCompra = novaCompraRequest.toModel(entityManager);
+        entityManager.persist(novaCompra);
+
+        URI locationOfNewCashCard = ucb
+                .path("compras/{id}")
+                .buildAndExpand(novaCompra.getId())
+                .toUri();
+
+        return ResponseEntity.created(locationOfNewCashCard).build();
     }
 }

@@ -1,5 +1,6 @@
 package com.dmf.loja.compra;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,9 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Compra {
+    @Id @GeneratedValue
+    private Long id;
     @NotBlank private String nome;
     @NotBlank @Email private String email;
     @NotBlank private String sobrenome;
@@ -23,7 +28,10 @@ public class Compra {
     @NotBlank private String cep;
     @NotNull @DecimalMin(value = "0.00", inclusive = false, message = "o total deve ser maior que zero")
     BigDecimal total;
-    @NotNull List<ItemCompra> itens;
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotNull List<ItemCompra> itens = new ArrayList<>();
+    @Enumerated(EnumType.STRING)
+    private StatusCompra statusCompra;
 
     public Compra(
             final String nome,
@@ -67,7 +75,10 @@ public class Compra {
         this.telefone = telefone;
         this.cep = cep;
         this.total = total;
+        this.statusCompra = StatusCompra.INICIADA;
+
         this.itens = List.copyOf(itens);
+        this.itens.forEach(item -> item.setCompra(this));
     }
 
     @Deprecated
@@ -75,6 +86,7 @@ public class Compra {
     }
 
     // Getters
+    public Long getId() { return id; }
     public String getNome() { return nome; }
     public String getEmail() { return email; }
     public String getSobrenome() { return sobrenome; }
@@ -88,4 +100,5 @@ public class Compra {
     public String getCep() { return cep; }
     public BigDecimal getTotal() { return total; }
     public List<ItemCompra> getItens() { return itens; }
+    public StatusCompra getStatusCompra() { return statusCompra; }
 }
