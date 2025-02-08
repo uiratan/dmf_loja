@@ -37,8 +37,9 @@ public record NovaCompraRequest(
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
 
+        Function<Compra, Pedido> funcaoCriacaoPedido = pedido.toModel(entityManager);
 
-                //1
+        //1
         Compra novaCompra = new Compra(
                 this.nome,
                 this.email,
@@ -49,18 +50,14 @@ public record NovaCompraRequest(
                 this.cidade,
                 pais,
                 this.telefone,
-                this.cep
+                this.cep,
+                funcaoCriacaoPedido
         );
 
         //1
         if (idEstado != null) {
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
-
-        Pedido novoPedido = pedido.toModel(novaCompra, entityManager);
-
-//        System.out.println(novoPedido);
-
 
         return novaCompra;
 

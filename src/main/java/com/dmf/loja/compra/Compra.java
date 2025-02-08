@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 
 import java.util.function.Function;
 
-@Entity
+//@Entity
 public class Compra {
     @Id @GeneratedValue private Long id;
     @NotBlank private String nome;
@@ -31,8 +31,8 @@ public class Compra {
     @NotBlank private String cep;
     @Enumerated(EnumType.STRING)
     private StatusCompra statusCompra;
-//    @OneToOne(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @NotNull private Pedido pedido;
+    @OneToOne(mappedBy = "compra")
+    @NotNull private Pedido pedido;
 
     public Compra(
             final String nome,
@@ -44,7 +44,7 @@ public class Compra {
             final String cidade,
             final Pais pais,
             final String telefone,
-            final String cep) {
+            final String cep, Function<Compra, Pedido> funcaoCriacaoPedido) {
 
         // Validações usando Spring Assert
         Assert.hasText(nome, "O nome não pode estar vazio");
@@ -68,6 +68,8 @@ public class Compra {
         this.pais = pais;
         this.telefone = telefone;
         this.cep = cep;
+        this.pedido = funcaoCriacaoPedido.apply(this);
+
         this.statusCompra = StatusCompra.INICIADA;
     }
 
@@ -81,27 +83,9 @@ public class Compra {
         this.estado = estado;
     }
 
-//    public void setPedido(Pedido pedido) {
-//        Assert.notNull(pedido, "O pedido não pode ser nulo");
-//        this.pedido = pedido;
-//    }
-
-    // Getters
-    public Long getId() { return id; }
-    public String getNome() { return nome; }
-    public String getEmail() { return email; }
-    public String getSobrenome() { return sobrenome; }
-    public String getDocumento() { return documento; }
-    public String getEndereco() { return endereco; }
-    public String getComplemento() { return complemento; }
-    public String getCidade() { return cidade; }
-    public Pais getPais() { return pais; }
-    public Estado getEstado() { return estado; }
-    public String getTelefone() { return telefone; }
-    public String getCep() { return cep; }
-    public StatusCompra getStatusCompra() { return statusCompra; }
-//    public Pedido getPedido() { return pedido; }
-
+    public Long getId() {
+        return id;
+    }
 
     @Override
     public String toString() {
@@ -119,6 +103,7 @@ public class Compra {
                 ", telefone='" + telefone + '\'' +
                 ", cep='" + cep + '\'' +
                 ", statusCompra=" + statusCompra +
+                ", pedido=" + pedido +
                 '}';
     }
 }

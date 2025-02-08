@@ -19,14 +19,16 @@ public record PedidoRequest(
         @Size(min = 1)
         @NotNull @Valid List<ItemPedidoRequest> itens
 ) {
-    public Pedido toModel(Compra compra, EntityManager entityManager) {
+
+    public Function<Compra, Pedido> toModel(EntityManager entityManager) {
         Set<ItemPedido> itensCalculados = itens().stream()
                 .map(item -> item.toModel(entityManager))
                 .collect(Collectors.toSet());
 
-        Pedido pedido = new Pedido(compra, itensCalculados);
-        Assert.isTrue(pedido.verificaTotal(total), "o valor total enviado está divergente do total real");
-        return pedido;
+        return (compra) -> {
+            Pedido pedido = new Pedido(compra, itensCalculados);
+            Assert.isTrue(pedido.verificaTotal(total), "o valor total enviado está divergente do total real");
+            return pedido;
+        };
     }
-
 }

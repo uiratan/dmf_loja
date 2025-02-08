@@ -1,6 +1,7 @@
 package com.dmf.loja.compra;
 
 import com.dmf.loja.livro.Livro;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+//@Entity
 public class Pedido {
 
     @NotNull private final Compra compra;
@@ -37,8 +39,7 @@ public class Pedido {
     @Override
     public String toString() {
         return "Pedido{" +
-                "compra=" + compra +
-                ", itens=" + itens +
+                "itens=" + itens +
                 '}';
     }
 }

@@ -37,15 +37,17 @@ public class ComprasController {
     @Transactional
     @PostMapping("/compras")
     //1
-    public ResponseEntity<Compra> realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest, UriComponentsBuilder ucb) {
+    public String realizarPagamento(@RequestBody @Valid NovaCompraRequest novaCompraRequest, UriComponentsBuilder ucb) {
         Compra novaCompra = novaCompraRequest.toModel(entityManager);
-        entityManager.persist(novaCompra);
-
-        URI locationOfNewCashCard = ucb
-                .path("compras/{id}")
-                .buildAndExpand(novaCompra.getId())
-                .toUri();
-
-        return ResponseEntity.created(locationOfNewCashCard).body(novaCompra);
+        System.out.println(novaCompra);
+//        entityManager.persist(novaCompra);
+//
+//        URI locationOfNewCashCard = ucb
+//                .path("compras/{id}")
+//                .buildAndExpand(novaCompra.getId())
+//                .toUri();
+//
+//        return ResponseEntity.created(locationOfNewCashCard).body(novaCompra);
+        return novaCompra.toString();
     }
 }
