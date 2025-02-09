@@ -12,38 +12,41 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.util.StringUtils;
 
-import java.time.LocalDate;
+import java.util.Optional;
 import java.util.function.Function;
 
-//6
+//8
 public record NovaCompraRequest(
         @NotBlank @Email String email,
         @NotBlank String nome,
         @NotBlank String sobrenome,
-        //1
         @NotBlank @CPFCNPJ String documento, //precisa ser um cpf ou cnpj
         @NotBlank String endereco,
         @NotBlank String complemento,
         @NotBlank String cidade,
-        //1
         @ExisteNoBanco(domainClass = Pais.class)
         @NotNull Long idPais,
         @ExisteNoBanco(fieldName = "id", domainClass = Estado.class)
         Long idEstado,
         @NotBlank String telefone,
         @NotBlank String cep,
+        //1
         @NotNull @Valid PedidoRequest pedido,
+        @ExisteNoBanco(fieldName = "codigo", domainClass = Cupom.class)
         String codigoCupom
 ) {
 
+    //1
     public Compra toModel(final EntityManager entityManager, final CupomRepository cupomRepository) {
         //1
         Pais pais = entityManager.find(Pais.class, idPais);
 
+        //1
+        //1
         Function<Compra, Pedido> funcaoCriacaoPedido = pedido.toModel(entityManager);
 
-        //1
         Compra novaCompra = new Compra(
                 this.nome,
                 this.email,
@@ -55,49 +58,42 @@ public record NovaCompraRequest(
                 pais,
                 this.telefone,
                 this.cep,
+                //1
                 funcaoCriacaoPedido
         );
 
-        //1
         // informações não obrigatórias não entram pelo construtor
+        //1
         if (isIdEstadoInformado()) {
             novaCompra.setEstado(entityManager.find(Estado.class, idEstado));
         }
 
+        //1
         if (isCodigoCupomInformado()) {
-            Cupom cupomEncontrado = cupomRepository
-                    .findByCodigoAndDataValidadeAfter(this.codigoCupom.toLowerCase(), LocalDate.now())
-                    .orElseThrow(() -> new IllegalArgumentException("cupom inválido"));
-
-            novaCompra.setCupom(cupomEncontrado);
+            Cupom cupomExistente = cupomRepository.getByCodigo(codigoCupom);
+            novaCompra.aplicarCupom(cupomExistente);
         }
-
-
-//        Optional.ofNullable(idEstado)
-//                .filter(aLong -> idEstado() != null)
-//                .flatMap(estadoRepository::findById)
-//                .ifPresent(novaCompra::setEstado);
-//
-//
-//        Optional.ofNullable(codigoCupom)
-//                .filter(codigo -> !codigo.isEmpty()) // Verifica se o código não está vazio
-//                .map(Long::valueOf)// transforma o codigoCupom em Long
-//                .flatMap(cupomRepository::findById) // Procura o cupom, se presente
-//                .ifPresent(novaCompra::setCupom); // Se o cupom for encontrado, atribui ao novaCompra
 
         return novaCompra;
 
     }
 
     public boolean isCodigoCupomInformado() {
-        return this.codigoCupom != null && !this.codigoCupom.isEmpty();
+        return StringUtils.hasText(codigoCupom);
     }
 
     public boolean isIdEstadoInformado() {
         return idEstado() != null;
     }
 
-
+    // nomenclatura para Optional
+    // getByXXX: retorna um objeto
+    // findByXX: pode retornar um null ou um objeto
+    public Optional<String> findCodigoCupom() {
+        return Optional.ofNullable(codigoCupom)
+                .filter(codigo -> !codigo.trim().isEmpty())
+                .map(String::toLowerCase);
+    }
 }
 
 

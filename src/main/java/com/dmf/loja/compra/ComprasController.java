@@ -54,6 +54,5 @@ public class ComprasController {
                 .toUri();
 
         return ResponseEntity.created(locationOfNewCashCard).body(novaCompra.toString());
-//        return novaCompra.toString();
     }
 }

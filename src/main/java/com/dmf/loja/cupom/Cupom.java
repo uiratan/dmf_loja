@@ -42,8 +42,17 @@ public class Cupom {
         return dataValidade.format(DateTimeFormatter.ofPattern(formato));
     }
 
-    public boolean isExpirado() {
-        return this.dataValidade.isBefore(LocalDate.now());
+    public boolean isValido() {
+        // TODO: testar com !LocalDate.now().isAfter(this.dataValidade)
+        return LocalDate.now().compareTo(this.dataValidade) <= 0;
+    }
+
+    public BigDecimal getPercentualDesconto() {
+        return percentualDesconto;
+    }
+
+    public LocalDate getDataValidade() {
+        return dataValidade;
     }
 
     @Override

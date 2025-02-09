@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -29,12 +30,18 @@ public class ExisteNoBancoValidator implements ConstraintValidator<ExisteNoBanco
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         if (value == null) {
-            return true;
+            return true; // Aceita valores nulos
         }
 
-        if (!isCaseSensitive) {
-            value = value.toString().toLowerCase();
+        if (value instanceof String && ((String) value).trim().isEmpty()) {
+            return true; // Retorna true para strings vazias
         }
+
+        if (value instanceof String && !isCaseSensitive) {
+            value = ((String) value).toLowerCase();
+        }
+
+
         String query = String.format("SELECT 1 FROM %s WHERE %s = :value", domainClass.getSimpleName(), fieldName);
 
         List<?> result = entityManager.createQuery(query)

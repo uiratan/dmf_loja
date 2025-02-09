@@ -15,20 +15,20 @@ import java.util.function.Function;
 @Entity
 public class Compra {
     @Id @GeneratedValue private Long id;
-    @NotBlank private String nome;
-    @NotBlank @Email private String email;
-    @NotBlank private String sobrenome;
-    @NotBlank private String documento;
-    @NotBlank private String endereco;
-    @NotBlank private String complemento;
-    @NotBlank private String cidade;
-    @NotNull @ManyToOne private Pais pais;
+    @NotBlank private final String nome;
+    @NotBlank @Email private final String email;
+    @NotBlank private final String sobrenome;
+    @NotBlank private final String documento;
+    @NotBlank private final String endereco;
+    @NotBlank private final String complemento;
+    @NotBlank private final String cidade;
+    @NotNull @ManyToOne private final Pais pais;
     @ManyToOne private Estado estado;
-    @NotBlank private String telefone;
-    @NotBlank private String cep;
-    @Enumerated(EnumType.STRING) private StatusCompra statusCompra;
-    @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private Pedido pedido;
-    @ManyToOne Cupom cupom;
+    @NotBlank private final String telefone;
+    @NotBlank private final String cep;
+    @Enumerated(EnumType.STRING) private final StatusCompra statusCompra;
+    @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private final Pedido pedido;
+    @Embedded private CupomAplicado cupomAplicado;
 
     public Compra(
             final String nome,
@@ -77,24 +77,16 @@ public class Compra {
         this.estado = estado;
     }
 
-    public void setCupom(@NotNull @Valid Cupom cupom) {
-        if (cupom == null) return;
-        Assert.isTrue(!this.isCompraSalva(), "cupom não pode ser aplicado a uma compra existente");
-        Assert.isTrue(!this.isCupomAplicado(), "o cupom de uma compra não pode ser alterado");
+    public void aplicarCupom(@NotNull @Valid Cupom cupom) {
+        Assert.isTrue(cupom.isValido(), "cupom está expirado");
+        Assert.isNull(this.cupomAplicado, "cupom de uma compra não pode ser trocado");
+        Assert.isNull(this.id, "cupom não pode ser aplicado a uma compra existente");
 
-        this.cupom = cupom;
+        this.cupomAplicado = new CupomAplicado(cupom);
     }
 
     public Long getId() {
         return id;
-    }
-
-    public boolean isCupomAplicado() {
-        return this.cupom != null;
-    }
-
-    public boolean isCompraSalva() {
-        return this.id != null;
     }
 
     @Override
@@ -114,7 +106,7 @@ public class Compra {
                 ", cep='" + cep + '\'' +
                 ", statusCompra=" + statusCompra +
                 ", pedido=" + pedido +
-                ", cupom=" + cupom +
+                ", cupom=" + cupomAplicado +
                 '}';
     }
 }

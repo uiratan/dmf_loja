@@ -1,13 +1,19 @@
 package com.dmf.loja.cupom;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-public interface CupomRepository extends JpaRepository<Cupom, Long> {
+public interface CupomRepository extends Repository<Cupom, Long> {
+    /**
+     * Busca por um cupom que existe no sistema
+     * @param codigo
+     * @return
+     */
+    Cupom getByCodigo(String codigo);
     Optional<Cupom> findByCodigo(String codigo);
     Optional<Cupom> findByCodigoAndDataValidadeAfter(String codigo, LocalDate dataAtual);
 

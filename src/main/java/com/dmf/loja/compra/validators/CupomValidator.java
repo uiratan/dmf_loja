@@ -4,6 +4,7 @@ import com.dmf.loja.compra.NovaCompraRequest;
 import com.dmf.loja.cupom.Cupom;
 import com.dmf.loja.cupom.CupomRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -35,39 +36,18 @@ public class CupomValidator implements Validator {
 
         NovaCompraRequest novaCompraRequest = (NovaCompraRequest) target;
 
-        // Se o cupom for nulo ou nao for informado um codigo, nao valida nada
-        if (novaCompraRequest.isCodigoCupomInformado()) {
-
-            String codigoCupomMinusculas = novaCompraRequest.codigoCupom().toLowerCase();
-
-            Optional<Cupom> cupomEncontrado = cupomRepository.findByCodigo(codigoCupomMinusculas);
-
-            // Ao invés de usar get() (que pode gerar NoSuchElementException),
-            // estamos lidando diretamente com a presença ou ausência do valor de forma segura.
-            cupomEncontrado.ifPresentOrElse(
-                    cupom -> {
-                        if (cupom.isExpirado()) {
-                            errors.rejectValue("codigoCupom", null, "este cupom está expirado");
-                        }
-                    },
-                    () -> errors.rejectValue("codigoCupom", null, "este cupom não existe")
-            );
-
-//            Optional<Cupom> cupomEncontrado = cupomRepository.findByCodigo(codigoCupomMinusculas);
-//
-//            if (!cupomEncontrado.isPresent()) {
-//                errors.rejectValue("codigoCupom", null, "este cupom não existe");
-//                return;
-//            }
-//
-//            if (cupomEncontrado.get().isExpirado()) {
-//                errors.rejectValue("codigoCupom", null, "este cupom está expirado");
-//            }
-
+        Optional<String> possivelCodigo = novaCompraRequest.findCodigoCupom();
+        if (possivelCodigo.isPresent()) {
+            Cupom cupom = cupomRepository.getByCodigo(possivelCodigo.get());
+            if (!cupom.isValido()) {
+                errors.rejectValue("codigoCupom", null, "este cupom está expirado");
+            }
         }
 
     }
 
 }
+
+
 
 
