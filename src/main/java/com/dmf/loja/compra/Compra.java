@@ -10,24 +10,25 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 @Entity
 public class Compra {
     @Id @GeneratedValue private Long id;
-    @NotBlank private final String nome;
-    @NotBlank @Email private final String email;
-    @NotBlank private final String sobrenome;
-    @NotBlank private final String documento;
-    @NotBlank private final String endereco;
-    @NotBlank private final String complemento;
-    @NotBlank private final String cidade;
-    @NotNull @ManyToOne private final Pais pais;
+    @NotBlank private String nome;
+    @NotBlank @Email private String email;
+    @NotBlank private String sobrenome;
+    @NotBlank private String documento;
+    @NotBlank private String endereco;
+    @NotBlank private String complemento;
+    @NotBlank private String cidade;
+    @NotNull @ManyToOne private Pais pais;
     @ManyToOne private Estado estado;
-    @NotBlank private final String telefone;
-    @NotBlank private final String cep;
-    @Enumerated(EnumType.STRING) private final StatusCompra statusCompra;
-    @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private final Pedido pedido;
+    @NotBlank private String telefone;
+    @NotBlank private String cep;
+    @Enumerated(EnumType.STRING) private StatusCompra statusCompra;
+    @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private Pedido pedido;
     @Embedded private CupomAplicado cupomAplicado;
 
     public Compra(
@@ -70,6 +71,11 @@ public class Compra {
         this.statusCompra = StatusCompra.INICIADA;
     }
 
+
+    @Deprecated
+    public Compra() {
+    }
+
     public void setEstado(@NotNull @Valid Estado estado) {
         if (estado == null) return;
         Assert.notNull(this.pais, "estado não pode ser associado enquanto o país nulo");
@@ -85,8 +91,77 @@ public class Compra {
         this.cupomAplicado = new CupomAplicado(cupom);
     }
 
+    public boolean existeCupom() {
+        return cupomAplicado != null;
+    }
+
+    public BigDecimal valorFinalComCupom() {
+        BigDecimal valorInicial = pedido.getTotal();
+        BigDecimal percentualDesconto = cupomAplicado.getPercentualDescontoMomento();
+        BigDecimal valorDesconto = valorInicial.multiply(percentualDesconto).divide(BigDecimal.valueOf(100));
+
+        // Calcular o valor final subtraindo o desconto do valor inicial
+        return valorInicial.subtract(valorDesconto);
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public StatusCompra getStatusCompra() {
+        return statusCompra;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public CupomAplicado getCupomAplicado() {
+        return cupomAplicado;
     }
 
     @Override

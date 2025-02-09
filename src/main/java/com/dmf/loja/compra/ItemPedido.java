@@ -2,8 +2,6 @@ package com.dmf.loja.compra;
 
 import com.dmf.loja.livro.Livro;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -31,6 +29,18 @@ public class ItemPedido {
 
     @Deprecated
     public ItemPedido() {
+    }
+
+    public Livro getLivro() {
+        return livro;
+    }
+
+    public Integer getQuantidade() {
+        return quantidade;
+    }
+
+    public BigDecimal getPrecoMomento() {
+        return precoMomento;
     }
 
     public BigDecimal total() {
