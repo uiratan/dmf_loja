@@ -1,7 +1,7 @@
 package com.dmf.loja.paisestado;
 
 import com.dmf.loja.validation.annotations.campounico.CampoUnico;
-import com.dmf.loja.validation.annotations.existeid.ExisteId;
+import com.dmf.loja.validation.annotations.existeid.ExisteNoBanco;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +14,7 @@ public record NovoEstadoRequest(
         @NotBlank String nome,
 
         //1
-        @ExisteId(fieldName = "id", domainClass = Pais.class)
+        @ExisteNoBanco(domainClass = Pais.class)
         @NotNull Long idPais
 ) {
     //1

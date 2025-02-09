@@ -1,6 +1,5 @@
 package com.dmf.loja.compra;
 
-import com.dmf.loja.livro.Livro;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -26,6 +25,18 @@ public class Pedido {
 
         this.compra = compra;
         this.itens.addAll(itens);
+    }
+
+    @Deprecated
+    public Pedido() {
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public BigDecimal getTotal() {
+        return totalPedido();
     }
 
     public boolean verificaTotal(@NotNull @Positive BigDecimal total) {

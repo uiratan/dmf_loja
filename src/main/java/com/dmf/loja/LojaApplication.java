@@ -2,6 +2,7 @@ package com.dmf.loja;
 
 import com.dmf.loja.autor.Autor;
 import com.dmf.loja.categoria.Categoria;
+import com.dmf.loja.cupom.Cupom;
 import com.dmf.loja.livro.Livro;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
@@ -39,6 +40,7 @@ public class LojaApplication {
             carregarLivros();
             carregarPaises();
             carregarEstados();
+            carregaCupons();
         }
 
         private void carregarCategorias() {
@@ -112,6 +114,24 @@ public class LojaApplication {
             for (Estado estado : estadosIniciais) {
                 entityManager.persist(estado);
             }
+        }
+
+        private void carregaCupons() {
+            LocalDate dataValidadeFutura = LocalDate.now().plusDays(10);
+            LocalDate dataValidadeAntiga = LocalDate.now().minusDays(10);
+
+            List<Cupom> cupons = List.of(
+                    new Cupom("10agora", BigDecimal.TEN, dataValidadeFutura),
+                    new Cupom("vintao", BigDecimal.valueOf(20), dataValidadeFutura)
+//                    new Cupom("ANTIGO", BigDecimal.valueOf(20), dataValidadeAntiga)
+            );
+
+            for (Cupom cupom : cupons) {
+                entityManager.persist(cupom);
+            }
+
+            System.out.println(cupons);
+
         }
     }
 

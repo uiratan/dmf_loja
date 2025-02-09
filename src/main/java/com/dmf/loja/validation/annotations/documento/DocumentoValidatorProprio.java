@@ -14,7 +14,7 @@ public class DocumentoValidatorProprio implements ConstraintValidator<CPFCNPJ, S
         return validarDocumento(value);
     }
 
-    // Método para validar CPF ou CNPJ
+    // Metodo para validar CPF ou CNPJ
     private static boolean validarDocumento(String documento) {
         if (documento == null) {
             return false;
@@ -31,7 +31,6 @@ public class DocumentoValidatorProprio implements ConstraintValidator<CPFCNPJ, S
         return false;  // Se o comprimento não for nem 11 nem 14, retorna inválido
     }
 
-    // Método para validar CPF
     private static boolean validarCPF(String cpf) {
         if (cpf == null || cpf.length() != 11 || !cpf.matches("[0-9]{11}")) {
             return false;
@@ -63,7 +62,6 @@ public class DocumentoValidatorProprio implements ConstraintValidator<CPFCNPJ, S
         return digito1 == Character.getNumericValue(cpf.charAt(9)) && digito2 == Character.getNumericValue(cpf.charAt(10));
     }
 
-    // Método para validar CNPJ
     private static boolean validarCNPJ(String cnpj) {
         if (cnpj == null || cnpj.length() != 14 || !cnpj.matches("[0-9]{14}")) {
             return false;

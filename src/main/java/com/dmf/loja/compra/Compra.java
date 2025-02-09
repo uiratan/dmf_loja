@@ -1,5 +1,6 @@
 package com.dmf.loja.compra;
 
+import com.dmf.loja.cupom.Cupom;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.util.function.Function;
 
 @Entity
@@ -27,6 +29,7 @@ public class Compra {
     @NotBlank private String cep;
     @Enumerated(EnumType.STRING) private StatusCompra statusCompra;
     @OneToOne(mappedBy = "compra", cascade = CascadeType.PERSIST) private Pedido pedido;
+    @Embedded private CupomAplicado cupomAplicado;
 
     public Compra(
             final String nome,
@@ -38,7 +41,8 @@ public class Compra {
             final String cidade,
             final Pais pais,
             final String telefone,
-            final String cep, Function<Compra, Pedido> funcaoCriacaoPedido) {
+            final String cep, Function<Compra, Pedido> funcaoCriacaoPedido
+    ) {
 
         // Validações usando Spring Assert
         Assert.hasText(nome, "O nome não pode estar vazio");
@@ -67,14 +71,97 @@ public class Compra {
         this.statusCompra = StatusCompra.INICIADA;
     }
 
+
+    @Deprecated
+    public Compra() {
+    }
+
     public void setEstado(@NotNull @Valid Estado estado) {
+        if (estado == null) return;
         Assert.notNull(this.pais, "estado não pode ser associado enquanto o país nulo");
         Assert.isTrue(estado.pertenceAoPais(this.pais), "estado deve pertencer ao país informado");
         this.estado = estado;
     }
 
+    public void aplicarCupom(@NotNull @Valid Cupom cupom) {
+        Assert.isTrue(cupom.isValido(), "cupom está expirado");
+        Assert.isNull(this.cupomAplicado, "cupom de uma compra não pode ser trocado");
+        Assert.isNull(this.id, "cupom não pode ser aplicado a uma compra existente");
+
+        this.cupomAplicado = new CupomAplicado(cupom);
+    }
+
+    public boolean existeCupom() {
+        return cupomAplicado != null;
+    }
+
+    public BigDecimal valorFinalComCupom() {
+        BigDecimal valorInicial = pedido.getTotal();
+        BigDecimal percentualDesconto = cupomAplicado.getPercentualDescontoMomento();
+        BigDecimal valorDesconto = valorInicial.multiply(percentualDesconto).divide(BigDecimal.valueOf(100));
+
+        // Calcular o valor final subtraindo o desconto do valor inicial
+        return valorInicial.subtract(valorDesconto);
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public Pais getPais() {
+        return pais;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public StatusCompra getStatusCompra() {
+        return statusCompra;
+    }
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public CupomAplicado getCupomAplicado() {
+        return cupomAplicado;
     }
 
     @Override
@@ -94,6 +181,7 @@ public class Compra {
                 ", cep='" + cep + '\'' +
                 ", statusCompra=" + statusCompra +
                 ", pedido=" + pedido +
+                ", cupom=" + cupomAplicado +
                 '}';
     }
 }

@@ -38,7 +38,7 @@ public class Estado {
         return nome;
     }
 
-    // Método para verificar se o estado pertence ao país fornecido
+    // Metodo para verificar se o estado pertence ao país fornecido
     public boolean pertenceAoPais(Pais pais) {
         return this.pais != null && this.pais.equals(pais);
     }
