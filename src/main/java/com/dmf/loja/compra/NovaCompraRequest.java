@@ -73,9 +73,7 @@ public record NovaCompraRequest(
             Cupom cupomExistente = cupomRepository.getByCodigo(codigoCupom);
             novaCompra.aplicarCupom(cupomExistente);
         }
-
         return novaCompra;
-
     }
 
     public boolean isCodigoCupomInformado() {
@@ -89,6 +87,8 @@ public record NovaCompraRequest(
     // nomenclatura para Optional
     // getByXXX: retorna um objeto
     // findByXX: pode retornar um null ou um objeto
+
+    // é preciso filtrar se o codigo passado nao é nulo para nao dar erro no validador
     public Optional<String> findCodigoCupom() {
         return Optional.ofNullable(codigoCupom)
                 .filter(codigo -> !codigo.trim().isEmpty())

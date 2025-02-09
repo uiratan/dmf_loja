@@ -80,7 +80,7 @@ public class Livro {
         Assert.isTrue(numeroPaginas >= 100, "O número de páginas deve ser maior ou igual a 100");
         Assert.hasText(isbn, "O ISBN não pode ser vazio ou nulo");
         Assert.notNull(dataPublicacao, "A data de publicação não pode ser nula");
-        Assert.isTrue(dataPublicacao.isAfter(LocalDate.now()), "A data de publicação deve ser no futuro");
+        Assert.isTrue(LocalDate.now().compareTo(dataPublicacao) <= 0, "A data de publicação deve ser no futuro");
         Assert.notNull(categoria, "A categoria não pode ser nula");
         Assert.notNull(autor, "O autor  não pode ser nulo");
 
