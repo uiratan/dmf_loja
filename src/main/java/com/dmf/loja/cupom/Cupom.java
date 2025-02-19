@@ -28,7 +28,7 @@ public class Cupom {
         Assert.notNull(percentualDesconto, "O percentual de desconto não pode ser nulo");
         Assert.isTrue(percentualDesconto.compareTo(BigDecimal.ZERO) > 0, "O percentual de desconto deve ser positivo");
         Assert.notNull(dataValidade, "A data de validade não pode ser nula");
-        Assert.isTrue(LocalDate.now().compareTo(dataValidade) <= 0, "A data de validade deve ser futura");
+        Assert.isTrue(dataValidade.compareTo(LocalDate.now()) >= 0, "A data de validade deve ser futura");
 
         this.codigo = codigo.toLowerCase();
         this.percentualDesconto = percentualDesconto;
@@ -48,6 +48,10 @@ public class Cupom {
         // LocalDate dataEspecifica = LocalDate.of(2025, 2, 9);
         // return this.dataValidade.isAfter(dataEspecifica);
         return LocalDate.now().compareTo(this.dataValidade) <= 0;
+    }
+
+    public String getCodigo() {
+        return codigo;
     }
 
     public BigDecimal getPercentualDesconto() {
