@@ -41,7 +41,8 @@ public class Compra {
             final String cidade,
             final Pais pais,
             final String telefone,
-            final String cep, Function<Compra, Pedido> funcaoCriacaoPedido
+            final String cep,
+            Function<Compra, Pedido> funcaoCriacaoPedido
     ) {
 
         // Validações usando Spring Assert
