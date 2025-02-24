@@ -42,8 +42,6 @@ class AutoresControllerTest {
                                 "email", email,
                                 "descricao",descricao));
 
-        System.out.println(email);
-
         MockHttpServletRequestBuilder conteudo = MockMvcRequestBuilders.post("/autores")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(payload);
