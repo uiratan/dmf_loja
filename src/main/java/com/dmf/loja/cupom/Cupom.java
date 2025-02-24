@@ -3,10 +3,7 @@ package com.dmf.loja.cupom;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
@@ -23,7 +20,7 @@ public class Cupom {
     public Cupom(
             @NotBlank final String codigo,
             @NotNull @Positive final BigDecimal percentualDesconto,
-            @Future final LocalDate dataValidade) {
+            @FutureOrPresent final LocalDate dataValidade) {
         Assert.hasText(codigo, "O código não pode ser nulo ou vazio");
         Assert.notNull(percentualDesconto, "O percentual de desconto não pode ser nulo");
         Assert.isTrue(percentualDesconto.compareTo(BigDecimal.ZERO) > 0, "O percentual de desconto deve ser positivo");
