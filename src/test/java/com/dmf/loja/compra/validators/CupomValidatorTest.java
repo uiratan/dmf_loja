@@ -20,7 +20,6 @@ import java.util.List;
 class CupomValidatorTest {
 
     List<ItemPedidoRequest> itens = List.of(new ItemPedidoRequest(1L, 1));
-    ;
     PedidoRequest pedido = new PedidoRequest(BigDecimal.valueOf(50), itens);
     private CupomRepository cupomRepository = Mockito.mock(CupomRepository.class);
 
