@@ -30,7 +30,7 @@ class ComprasControllerTest {
     private CustomMockMvc mvc;
 
     @Property(tries = 10)
-    @Label("fluxo de cadastro de novo estado")
+    @Label("fluxo de cadastro de fechamento de compra")
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void teste(
             @ForAll @AlphaChars @StringLength(min = 1, max = 50) String email,
