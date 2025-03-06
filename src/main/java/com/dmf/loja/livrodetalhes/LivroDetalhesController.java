@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 //3
 @RestController
 @RequestMapping
@@ -26,9 +28,8 @@ public class LivroDetalhesController {
         //1
         Livro livroDesejado = entityManager.find(Livro.class, id);
         //1
-        if (livroDesejado == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        Livro livroBuscado = Optional.ofNullable(entityManager.find(Livro.class, id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         //1
         LivroDetalhesResponse livroDetalheResponse = LivroDetalhesResponse.fromModel(livroDesejado);
