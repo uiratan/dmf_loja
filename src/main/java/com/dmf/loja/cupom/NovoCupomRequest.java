@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public record NovoCupomRequest(
 
-        @CampoUnico(domainClass = Cupom.class, fieldName = "codigo")
+        @CampoUnico(domainClass = Cupom.class, fieldName = "codigo", isCaseSensitive = true)
         @NotBlank String codigo,
         @NotNull @Positive BigDecimal percentualDesconto,
         @JsonFormat(pattern = "dd/MM/yyy", shape = JsonFormat.Shape.STRING)

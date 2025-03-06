@@ -12,6 +12,7 @@ public class CampoUnicoValidator implements ConstraintValidator<CampoUnico, Stri
 
     private String fieldName;
     private Class<?> domainClass;
+    private boolean isCaseSensitive;
 
     @Autowired
     private EntityManager entityManager;
@@ -20,6 +21,7 @@ public class CampoUnicoValidator implements ConstraintValidator<CampoUnico, Stri
     public void initialize(CampoUnico constraintAnnotation) {
         this.fieldName = constraintAnnotation.fieldName();
         this.domainClass = constraintAnnotation.domainClass();
+        this.isCaseSensitive = constraintAnnotation.isCaseSensitive();
     }
 
     @Override
@@ -29,6 +31,10 @@ public class CampoUnicoValidator implements ConstraintValidator<CampoUnico, Stri
         }
 
         String query = String.format("SELECT 1 FROM %s WHERE %s = :value", domainClass.getSimpleName(), fieldName);
+
+        if (isCaseSensitive) {
+            value = value.toLowerCase();
+        }
 
         List<?> result = entityManager.createQuery(query)
                 .setParameter("value", value)
