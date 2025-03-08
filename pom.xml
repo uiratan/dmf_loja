@@ -69,6 +69,12 @@
 			<artifactId>jqwik-spring</artifactId>
 			<version>0.12.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.sonarsource.scanner.maven</groupId>
+			<artifactId>sonar-maven-plugin</artifactId>
+			<version>5.0.0.4389</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -116,6 +122,12 @@
 				</configuration>
 			</plugin>
 
+			<!-- Plugin Sonar -->
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>5.0.0.4389</version>
+			</plugin>
 
 		</plugins>
 
