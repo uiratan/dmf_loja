@@ -1,6 +1,7 @@
 package com.dmf.loja.cupom;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -12,18 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CupomController {
 
-    private final EntityManager entityManager;
+//    private final EntityManager entityManager;
+//
+//    public CupomController(EntityManager entityManager) {
+//        this.entityManager = entityManager;
+//    }
+@PersistenceContext
+private EntityManager manager;
 
-    public CupomController(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    @PostMapping("cupons")
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/cupons")
     @Transactional
     public String novoCupom(@RequestBody @Valid NovoCupomRequest novoCupomRequest) {
         Cupom novoCupom = novoCupomRequest.toModel();
-        entityManager.persist(novoCupom);
+        manager.persist(novoCupom);
         return novoCupom.toString();
     }
 }

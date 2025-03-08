@@ -21,6 +21,7 @@ public class Pedido {
 
     public Pedido(Compra compra, Set<ItemPedido> itens) {
         Assert.notNull(compra, "a compra não pode ser nulo");
+        Assert.notNull(itens, "os itens do pedido não pode ser nulo");
         Assert.isTrue(!itens.isEmpty(), "todo pedido deve ter pelo menos um item");
 
         this.compra = compra;

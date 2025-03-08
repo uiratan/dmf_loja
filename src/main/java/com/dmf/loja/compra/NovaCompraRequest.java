@@ -5,13 +5,16 @@ import com.dmf.loja.cupom.Cupom;
 import com.dmf.loja.cupom.CupomRepository;
 import com.dmf.loja.paisestado.Estado;
 import com.dmf.loja.paisestado.Pais;
-import com.dmf.loja.validation.annotations.documento.CPFCNPJ;
+import com.dmf.loja.validation.annotations.documento.Documento;
 import com.dmf.loja.validation.annotations.existeid.ExisteNoBanco;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.internal.constraintvalidators.hv.br.CNPJValidator;
+import org.hibernate.validator.internal.constraintvalidators.hv.br.CPFValidator;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
@@ -22,7 +25,7 @@ public record NovaCompraRequest(
         @NotBlank @Email String email,
         @NotBlank String nome,
         @NotBlank String sobrenome,
-        @NotBlank @CPFCNPJ String documento, //precisa ser um cpf ou cnpj
+        @NotBlank @Documento String documento, //precisa ser um cpf ou cnpj
         @NotBlank String endereco,
         @NotBlank String complemento,
         @NotBlank String cidade,
@@ -47,6 +50,7 @@ public record NovaCompraRequest(
         //1
         Function<Compra, Pedido> funcaoCriacaoPedido = pedido.toModel(entityManager);
 
+        //1
         Compra novaCompra = new Compra(
                 this.nome,
                 this.email,
@@ -81,7 +85,8 @@ public record NovaCompraRequest(
     }
 
     public boolean isIdEstadoInformado() {
-        return idEstado() != null;
+//        return idEstado() != null;
+        return Optional.ofNullable(idEstado).isPresent();
     }
 
     // nomenclatura para Optional

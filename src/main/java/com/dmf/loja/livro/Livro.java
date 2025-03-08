@@ -99,6 +99,10 @@ public class Livro {
     public Livro() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getTitulo() {
         return titulo;
     }
@@ -129,6 +133,10 @@ public class Livro {
 
     public String getDataPublicacaoComFormato(String formato) {
         return dataPublicacao.format(DateTimeFormatter.ofPattern(formato));
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
     }
 
     public Autor getAutor() {
